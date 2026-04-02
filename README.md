@@ -1,6 +1,6 @@
 
 <p align="center">
-<img src="verycat.gif" alt="drawing" width="400" />
+<img src="verycat.gif" alt="drawing" width="200" />
 </p>
 
 # DotFiles
