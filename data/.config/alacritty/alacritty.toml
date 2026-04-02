@@ -4,7 +4,9 @@ bindings = [
     { key = "Up",     mods = "Control|Alt",   action = "ScrollToTop"      },
     { key = "Down",   mods = "Control|Alt",   action = "ScrollToBottom"   },
     { key = "Up",     mods = "Control|Shift", action = "ScrollPageUp"     },
-    { key = "Down",   mods = "Control|Shift", action = "ScrollPageDown"   }
+    { key = "Down",   mods = "Control|Shift", action = "ScrollPageDown"   },
+    { key = "+",      mods = "Control",       action = "IncreaseFontSize" },
+    { key = "-",      mods = "Control",       action = "DecreaseFontSize" }
 ]
 
 [scrolling]
