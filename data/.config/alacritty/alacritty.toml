@@ -1,0 +1,49 @@
+[keyboard]
+bindings = [
+    { key = "Return", mods = "Control|Shift", action = "SpawnNewInstance" },
+    { key = "Up",     mods = "Control|Alt",   action = "ScrollToTop"      },
+    { key = "Down",   mods = "Control|Alt",   action = "ScrollToBottom"   },
+    { key = "Up",     mods = "Control|Shift", action = "ScrollPageUp"     },
+    { key = "Down",   mods = "Control|Shift", action = "ScrollPageDown"   }
+]
+
+[scrolling]
+multiplier = 1
+
+[window]
+dimensions = { columns = 95, lines = 26 }
+
+[bell]
+duration = 200
+animation = "EaseOut"
+color = "#000000"
+command = { program = "paplay", args = ["/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga"]}
+
+[cursor]
+style = { shape = "Beam", blinking = "Always" }
+blink_interval = 500
+blink_timeout = 0
+unfocused_hollow = false
+thickness = 0.2
+
+[general]
+import = ["/usr/share/alacritty/themes/github_dark_high_contrast.toml"]
+
+[font]
+size = 14.0
+
+[font.bold]
+family = "hack"
+style = "Bold"
+
+[font.bold_italic]
+family = "hack"
+style = "Bold Italic"
+
+[font.italic]
+family = "hack"
+style = "Italic"
+
+[font.normal]
+family = "hack"
+style = "Regular"

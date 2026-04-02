@@ -7,6 +7,30 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "agent_servers": {
+    "qwen-code": {
+      "type": "registry"
+    },
+    "kimi": {
+      "type": "registry"
+    },
+    "cline": {
+      "type": "registry"
+    }
+  },
+  "agent": {
+    "default_model": {
+      "provider": "openrouter",
+      "model": "openrouter/free",
+      "enable_thinking": true
+    },
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "edit_predictions": {
+    "provider": "none"
+  },
   "telemetry": {
     "diagnostics": false,
     "metrics": false,
@@ -47,12 +71,6 @@
     "thumb": "always",
     "show": "never",
   },
-  "features": {
-    "edit_prediction_provider": "none",
-  },
-  "agent": {
-    "enabled": false,
-  },
   "session": {
     "trust_all_worktrees": true,
   },
@@ -72,7 +90,7 @@
   "ui_font_family": "Fira Code",
   "buffer_font_family": "Fira Code",
   "icon_theme": "JetBrains New UI Icons (Dark)",
-  "theme": "Github Dark",
+  "theme": "GitHub Dark",
   "ui_font_size": 15.0,
   "buffer_font_size": 15,
 }
