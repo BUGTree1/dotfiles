@@ -29,7 +29,7 @@ unfocused_hollow = false
 thickness = 0.2
 
 [general]
-import = ["/usr/share/alacritty/themes/github_dark_high_contrast.toml"]
+import = ["~/.config/alacritty/github_dark_high_contrast.toml"]
 
 [font]
 size = 14.0

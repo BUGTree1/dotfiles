@@ -8,6 +8,7 @@ FILE_SYMLINK_PREFIX="${PWD}/data/"
 
 declare -a files=(".config/zed/settings.json"
 ".config/alacritty/alacritty.toml"
+".config/alacritty/github_dark_high_contrast.toml"
 ".config/plasmashellrc"
 ".bash_profile"
 ".bashrc"
