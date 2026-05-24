@@ -7,6 +7,16 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "mouse_wheel_zoom": true,
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "git_panel": {
+    "dock": "left"
+  },
   "agent_servers": {
     "qwen-code": {
       "type": "registry"
@@ -39,6 +49,7 @@
     "enable_preview_from_project_panel": true,
   },
   "project_panel": {
+    "dock": "left",
     "button": true,
   },
   "debugger": {
