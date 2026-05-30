@@ -28,6 +28,7 @@ declare -a home_files=(
 ".profile"
 ".xinitrc"
 ".Xresources"
+".Xdefaults"
 )
 
 # \/ remember that the folders must not end with / or /*
