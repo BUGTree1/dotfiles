@@ -14,6 +14,8 @@ declare -a files=(
 )
 
 declare -a home_files=(
+".config/bspwm/bspwmrc"
+".config/sxhkd/sxhkdrc"
 ".config/zed/settings.json"
 ".config/alacritty/alacritty.toml"
 ".config/alacritty/github_dark_high_contrast.toml"
@@ -44,7 +46,7 @@ symlink_path_ex () {
         mkdir -p "$(dirname "${symlink_path}")"
         if [ "${folder}" = '/*' ]; then  mkdir -p "${symlink_path}"; fi
         mv $( ls "${real_path}"${folder} 2>/dev/null ) "${symlink_path}" 2>/dev/null | :
-        rmdir "${real_path}"
+        #rmdir "${real_path}"
         ln -sf -T "${symlink_path}" "${real_path}"
         echo "Moved and Linked: \"${real_path}\" to: \"${symlink_path}\""
     else
