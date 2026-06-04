@@ -21,10 +21,10 @@ URxvt.keysym.Control-Shift-V: eval:paste_clipboard
 
 URxvt.geometry: 95x26
 
-URxvt.font:           xft:hack:size=18
-URxvt.boldFont:       xft:hack:size=18:style=Bold
-URxvt.italicFont:     xft:hack:size=18:style=Italic
-URxvt.boldItalicFont: xft:hack:size=18:style=Bold Italic
+URxvt.font:           xft:hack:size=14
+URxvt.boldFont:       xft:hack:size=14:style=Bold
+URxvt.italicFont:     xft:hack:size=14:style=Italic
+URxvt.boldItalicFont: xft:hack:size=14:style=Bold Italic
 
 *background: #0a0c10
 *foreground: #f0f3f6
