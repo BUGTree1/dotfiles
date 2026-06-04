@@ -8,12 +8,26 @@ Xft.hinting:    true
 Xft.hintstyle:  hintslight
 Xft.autohint:   false
 Xft.lcdfilter:  lcddefault
-URxvt*font:           xft:hack:size=14
+URxvt.perl-ext-common: default,matcher,-confirm-paste
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.button: 1
 URxvt.scrollBar: false
 URxvt.scrollBar_right: false
 URxvt.scrollBar_floating: false
 URxvt.scrollstyle: rxvt
 URxvt*saveLines: 16384
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+URxvt.keysym.Control-Shift-C: eval:selection_to_clipboard
+URxvt.keysym.Control-Shift-V: eval:paste_clipboard
+
+URxvt.geometry: 95x26
+
+URxvt.font:           xft:hack:size=18
+URxvt.boldFont:       xft:hack:size=18:style=Bold
+URxvt.italicFont:     xft:hack:size=18:style=Italic
+URxvt.boldItalicFont: xft:hack:size=18:style=Bold Italic
+
 *background: #0a0c10
 *foreground: #f0f3f6
 
