@@ -35,7 +35,9 @@ dunst &
 # statusbar
 #bspc config top_padding 32
 
-gentoo-pipewire-launcher &
+#gentoo-pipewire-launcher &
 
 # set wallpaper
-xwallpaper --zoom "/home/szyme/Pictures/wallpaper.png"
+xwallpaper --zoom "/home/szyme/Pictures/ArchLinux_Synthwave_4K_Wallpaper.png"
+
+picom -b --no-vsync --no-fading-openclose

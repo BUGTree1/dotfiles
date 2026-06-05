@@ -16,6 +16,7 @@ declare -a files=(
 declare -a home_files=(
 ".config/bspwm/bspwmrc"
 ".config/sxhkd/sxhkdrc"
+".config/dunst/dunstrc"
 ".config/zed/settings.json"
 ".config/alacritty/alacritty.toml"
 ".config/alacritty/github_dark_high_contrast.toml"

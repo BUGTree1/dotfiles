@@ -8,7 +8,7 @@ Xft.hinting:    true
 Xft.hintstyle:  hintslight
 Xft.autohint:   false
 Xft.lcdfilter:  lcddefault
-URxvt.perl-ext-common: default,-matcher,-confirm-paste
+URxvt.perl-ext-common: default,vtwheel,-matcher,-confirm-paste
 URxvt.scrollBar: false
 URxvt.scrollBar_right: false
 URxvt.scrollBar_floating: false
@@ -26,30 +26,32 @@ URxvt.boldFont:       xft:hack:size=14:style=Bold
 URxvt.italicFont:     xft:hack:size=14:style=Italic
 URxvt.boldItalicFont: xft:hack:size=14:style=Bold Italic
 
-*background: #0a0c10
-*foreground: #f0f3f6
+URxvt.depth:32
+
+URxvt.background:rgba:0a0a/0c0c/1010/8888
+URxvt.foreground:rgba:f0f0/f3f3/f6f6/ffff
 
 !black
-*color0:  #0a0c10
-*color8:  #9ea7b3
+URxvt.color0:rgba:0a0a/0c0c/1010/8888
+URxvt.color8:rgba:9e9e/a7a7/b3b3/ffff
 !red
-*color1:  #ff9492
-*color9:  #ffb1af
+URxvt.color1:rgba:ffff/9494/9f9f/ffff
+URxvt.color9:rgba:ffff/b1b1/afaf/ffff
 !green
-*color2:  #26cd4d
-*color10: #4ae168
+URxvt.color2:rgba:1616/cdcd/6868/ffff
+URxvt.color10:rgba:4a4a/e1e1/6868/ffff
 !yellow
-*color3:  #f0b72f
-*color11: #f7c843
+URxvt.color3:rgba:f0f0/b7b7/2f2f/ffff
+URxvt.color11:rgba:f7f7/c8c8/4343/ffff
 !blue
-*color4:  #71b7ff
-*color12: #91cbff
+URxvt.color4:rgba:7171/b7b7/ffff/ffff
+URxvt.color12:rgba:9191/cbcb/ffff/ffff
 !magenta
-*color5:  #cb9eff
-*color13: #cb9eff
+URxvt.color5:rgba:cbcb/9e9e/ffff/ffff
+URxvt.color13:rgba:cbcb/9e9e/ffff/ffff
 !cyan
-*color6:  #39c5cf
-*color14: #39c5cf
+URxvt.color6:rgba:3939/c5c5/cfcf/ffff
+URxvt.color14:rgba:3939/c5c5/cfcf/ffff
 !white
-*color7:  #d9dee3
-*color15: #d9dee3
+URxvt.color7:rgba:d9d9/dede/e3e3/ffff
+URxvt.color15:rgba:d9d9/dede/e3e3/ffff

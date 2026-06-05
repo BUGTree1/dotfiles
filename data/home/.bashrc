@@ -6,3 +6,5 @@
 [[ $- != *i* ]] && return
 
 source ~/.profile
+
+clear
