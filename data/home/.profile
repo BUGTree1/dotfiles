@@ -4,6 +4,7 @@
 
 source /usr/share/bash-completion/bash_completion
 
+alias sudo='doas'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias kkill='qdbus org.kde.KWin /KWin killWindow'

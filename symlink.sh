@@ -44,17 +44,17 @@ symlink_path_ex () {
     symlink_path=${2}
     folder=${3}
     if [ -e "${real_path}" ] && [ ! -L "${real_path}" ]; then
-        mkdir -p "$(dirname "${symlink_path}")"
-        if [ "${folder}" = '/*' ]; then  mkdir -p "${symlink_path}"; fi
-        mv $( ls "${real_path}"${folder} 2>/dev/null ) "${symlink_path}" 2>/dev/null | :
+        mkdir -v -p "$(dirname "${symlink_path}")"
+        if [ "${folder}" = '/*' ]; then  mkdir -v -p "${symlink_path}"; fi
+        mv -v $( ls "${real_path}"${folder} 2>/dev/null ) "${symlink_path}" 2>/dev/null | :
         #rmdir "${real_path}"
-        ln -sf -T "${symlink_path}" "${real_path}"
+        ln -v -sf "${symlink_path}" "${real_path}"
         echo "Moved and Linked: \"${real_path}\" to: \"${symlink_path}\""
     else
         if [ -e "${symlink_path}" ]; then
-            mkdir -p "$(dirname "${real_path}")"
-            if [ "${folder}" = '/*' ]; then  mkdir -p "${real_path}"; fi
-            ln -sf -T "${symlink_path}" "${real_path}"
+            mkdir -v -p "$(dirname "${real_path}")"
+            #if [ "${folder}" = '/*' ]; then  mkdir -v -p "${real_path}"; fi
+            ln -v -sf "${symlink_path}" "${real_path}"
             echo "Linked: \"${real_path}\" to: \"${symlink_path}\""
         else
             echo "ERROR: The path \"${real_path}\" and its symlink \"${symlink_path}\" do not exist!"
