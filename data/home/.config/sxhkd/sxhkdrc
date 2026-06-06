@@ -20,9 +20,6 @@ super + shift + s
 super + shift + c
 	clipcat-menu --rofi-menu-length 10
 
-x
-	notify-send "Current Brightness: $(light -G)"
-
 XF86MonBrightness{Up,Down}  
 	sudo light -{A,U} 5 ; notify-send "Current Brightness: $(light -G)"
  
