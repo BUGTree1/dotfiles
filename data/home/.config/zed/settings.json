@@ -86,7 +86,7 @@
     "trust_all_worktrees": true,
   },
   "terminal": {
-    "font_size": 20.0,
+    "font_size": 14.0,
   },
   "lsp": {
     "clangd": {
@@ -97,7 +97,7 @@
   },
   "remove_trailing_whitespace_on_save": false,
   "format_on_save": "off",
-  "auto_indent": false,
+  "auto_indent": "none",
   "ui_font_family": "Fira Code",
   "buffer_font_family": "Fira Code",
   "icon_theme": "JetBrains New UI Icons (Dark)",
