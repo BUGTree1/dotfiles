@@ -37,6 +37,7 @@ declare -a folders=(
 )
 
 declare -a home_folders=(
+".config/rofi"
 ".nano"
 )
 
@@ -45,20 +46,20 @@ symlink_path_ex () {
     symlink_path=${2}
     folder=${3}
     if [ -e "${real_path}" ] && [ ! -L "${real_path}" ]; then
-        mkdir -v -p "$(dirname "${symlink_path}")"
-        if [ "${folder}" = '/*' ]; then  mkdir -v -p "${symlink_path}"; fi
-        mv -v $( ls "${real_path}"${folder} 2>/dev/null ) "${symlink_path}" 2>/dev/null | :
+        #mkdir -v -p "$(dirname "${symlink_path}")"
+        #if [ "${folder}" = '/*' ]; then  mkdir -v -p "${symlink_path}"; fi
+        mv -v "${real_path}" "${symlink_path}" | :
         #rmdir "${real_path}"
         ln -v -sf "${symlink_path}" "${real_path}"
-        echo "Moved and Linked: \"${real_path}\" to: \"${symlink_path}\""
+        echo "[  OK  ] Moved and Linked: \"${real_path}\" to: \"${symlink_path}\""
     else
         if [ -e "${symlink_path}" ]; then
             mkdir -v -p "$(dirname "${real_path}")"
             #if [ "${folder}" = '/*' ]; then  mkdir -v -p "${real_path}"; fi
             ln -v -sf "${symlink_path}" "${real_path}"
-            echo "Linked: \"${real_path}\" to: \"${symlink_path}\""
+            echo "[  OK  ] Linked: \"${real_path}\" to: \"${symlink_path}\""
         else
-            echo "ERROR: The path \"${real_path}\" and its symlink \"${symlink_path}\" do not exist!"
+            echo "[  ERR ] ERROR: The path \"${real_path}\" and its symlink \"${symlink_path}\" do not exist!"
             exit 1
         fi
     fi
