@@ -40,4 +40,7 @@ dunst &
 # set wallpaper
 xwallpaper --zoom "/home/szyme/Pictures/ArchLinux_Synthwave_4K_Wallpaper.png"
 
-picom -b --no-vsync --no-fading-openclose
+clipcatd
+
+#picom -b --no-vsync --no-fading-openclose
+fastcompmgr

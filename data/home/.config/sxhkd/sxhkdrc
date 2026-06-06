@@ -15,7 +15,19 @@ super + Escape
 	pkill -USR1 -x sxhkd
 
 super + shift + s
-	screengrab -r
+	maim -s | xclip -selection clipboard -t image/png
+
+super + shift + c
+	clipcat-menu --rofi-menu-length 10
+
+x
+	notify-send "Current Brightness: $(light -G)"
+
+XF86MonBrightness{Up,Down}  
+	sudo light -{A,U} 5 ; notify-send "Current Brightness: $(light -G)"
+ 
+XF86Audio{Raise,Lower}Volume  
+	wpctl set-volume @DEFAULT_SINK@ .05{+,-} ; notify-send "$(wpctl get-volume @DEFAULT_SINK@)"
 
 #
 # bspwm hotkeys
