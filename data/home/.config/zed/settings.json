@@ -87,6 +87,9 @@
   },
   "terminal": {
     "font_size": 14.0,
+    "env": {
+      "ZED_TERM": "1"
+    },
   },
   "lsp": {
     "clangd": {
