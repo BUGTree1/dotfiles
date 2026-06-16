@@ -32,6 +32,12 @@ XF86MonBrightness{Up,Down}
 XF86Audio{Raise,Lower}Volume  
 	wpctl set-volume @DEFAULT_SINK@ .05{+,-} ; notify-send "$(wpctl get-volume @DEFAULT_SINK@)"
 
+super + b
+	TMP_BRIGHTNESS_FILE=~/".brightness.$(bspc query -M -m focused --names).tmp" ; dc -e "$(cat $TMP_BRIGHTNESS_FILE) 0.05 + p" > $TMP_BRIGHTNESS_FILE ; xrandr --output $(bspc query -M -m focused --names) --brightness $(cat $TMP_BRIGHTNESS_FILE) ; notify-send "Fake Brightness set to: $(cat $TMP_BRIGHTNESS_FILE)"
+
+super + shift + b
+	TMP_BRIGHTNESS_FILE=~/".brightness.$(bspc query -M -m focused --names).tmp" ; dc -e "$(cat $TMP_BRIGHTNESS_FILE) 0.05 - p" > $TMP_BRIGHTNESS_FILE ; xrandr --output $(bspc query -M -m focused --names) --brightness $(cat $TMP_BRIGHTNESS_FILE) ; notify-send "Fake Brightness set to: $(cat $TMP_BRIGHTNESS_FILE)"
+
 #
 # bspwm hotkeys
 #
