@@ -1,19 +1,12 @@
 #!/usr/bin/env bash
 
-#PUT THIS FILE IN ~/.local/share/rofi/finder.sh
-#USE: rofi  -show find -modi find:~/.local/share/rofi/finder.sh
-SEARCH_PATHS=(
-~/Desktop
-~/Documents
-~/Downloads
-~/Games
-~/Music
-~/Pictures
-~/Projects
-~/Public
-~/Templates
-~/Videos
-)
+# PUT THIS FILE IN ~/.local/share/rofi/finder.sh
+# USE: rofi  -show find -modi find:~/.local/share/rofi/finder.sh
+# SEARCH PATHS ARE SET IN /etc/updatedb.conf
+
+MATCH_LIMIT=10
+
+sudo updatedb
 
 if [ ! -z "$@" ]
 then
@@ -24,12 +17,12 @@ then
     then
       #coproc ( exo-open "${QUERY%\/* \?\?}"  > /dev/null 2>&1 )
       xdg-open "${QUERY%\/* \?\?}"
-      exec 1>&-
+      #exec 1>&-
       exit;
     else
       #coproc ( exo-open "$@"  > /dev/null 2>&1 )
       xdg-open "$@"
-      exec 1>&-
+      #exec 1>&-
       exit;
     fi
   elif [[ "$@" == \!\!* ]]
@@ -43,10 +36,12 @@ then
     echo "!!-- Type another search query"
     while read -r line; do
       echo "$line" \?\?
-    done <<< $(find $SEARCH_PATHS[@] -type d -path '*/\.*' -prune -o -not -name '.*' -type f -iname *"${QUERY#\?}"* -print)
+    #done <<< $(find ~ -type d -path '*/\.*' -prune -o -not -name '.*' -type f -iname *"${QUERY#\?}"* -print)
+    done <<< $(plocate -i -l ${MATCH_LIMIT} "${QUERY#!}")
   else
     echo "!!-- Type another search query"
-    find $SEARCH_PATHS[@] -type d -path '*/\.*' -prune -o -not -name '.*' -type f -iname *"${QUERY#!}"* -print
+    #find ~ -type d -path '*/\.*' -prune -o -not -name '.*' -type f -iname *"${QUERY#!}"* -print
+    plocate -i -l ${MATCH_LIMIT} "${QUERY#!}"
   fi
 else
   echo "!!-- Type your search query to find files"
