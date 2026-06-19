@@ -17,3 +17,4 @@ require("bunny"):setup({
   fuzzy_cmd = "fzf", -- Fuzzy searching command, default is "fzf"
 })
 
+ya.emit("plugin", { "bunny", "fuzzy" })
