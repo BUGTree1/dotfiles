@@ -38,6 +38,7 @@ declare -a folders=(
 
 declare -a home_folders=(
 ".config/rofi"
+".config/yazi"
 ".nano"
 )
 
