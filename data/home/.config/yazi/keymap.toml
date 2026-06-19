@@ -13,3 +13,8 @@ run = "plugin bunny fuzzy"
 on   = "s"
 run  = 'shell "$SHELL" --block'
 desc = "Open $SHELL here"
+
+[[mgr.prepend_keymap]]
+on   = "<C-f>"
+run  = "find --insensitive"
+desc = "Find file"
