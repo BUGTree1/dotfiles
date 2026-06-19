@@ -1,0 +1,3 @@
+[submodule "data/home/.config/yazi/plugins/bunny.yazi"]
+	path = data/home/.config/yazi/plugins/bunny.yazi
+	url = https://github.com/stelcodes/bunny.yazi
