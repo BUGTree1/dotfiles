@@ -46,6 +46,10 @@ symlink_path_ex () {
     real_path=${1}
     symlink_path=${2}
     folder=${3}
+    if [ -L "${real_path}" ]; then
+        echo "[  OK  ] Skipped already linked path: ${real_path} -> ${symlink_path}"
+        return
+    fi
     if [ -e "${real_path}" ] && [ ! -L "${real_path}" ]; then
         #mkdir -v -p "$(dirname "${symlink_path}")"
         #if [ "${folder}" = '/*' ]; then  mkdir -v -p "${symlink_path}"; fi
