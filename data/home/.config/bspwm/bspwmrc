@@ -32,6 +32,12 @@ bspc config split_ratio                0.5
 #bspc rule -a Kupfer.py focus=on
 #bspc rule -a Screenkey manage=off
 
+export XDG_CURRENT_DESKTOP="LXQt"
+export XDG_SESSION_DESKTOP="LXQt"
+export XDG_SESSION_TYPE="x11"
+# This line is CRITICAL on Artix to ensure D-Bus session variables are updated
+dbus-update-activation-environment --all
+
 # disable sleep
 xset s off -dpms
 
