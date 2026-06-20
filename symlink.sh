@@ -20,6 +20,7 @@ declare -a home_files=(
 ".config/zed/settings.json"
 ".config/alacritty/alacritty.toml"
 ".config/alacritty/github_dark_high_contrast.toml"
+".config/xdg-desktop-portal/portals.conf"
 ".config/plasmashellrc"
 ".bash_profile"
 ".bashrc"
@@ -51,7 +52,7 @@ symlink_path_ex () {
         return
     fi
     if [ -e "${real_path}" ] && [ ! -L "${real_path}" ]; then
-        #mkdir -v -p "$(dirname "${symlink_path}")"
+        mkdir -v -p "$(dirname "${symlink_path}")"
         #if [ "${folder}" = '/*' ]; then  mkdir -v -p "${symlink_path}"; fi
         mv -v "${real_path}" "${symlink_path}" | :
         #rmdir "${real_path}"
