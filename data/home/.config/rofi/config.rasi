@@ -1,1 +1,13 @@
+configuration {
+  drun {
+    /** Scan the current users desktop for desktop files. */
+    scan-desktop: true;
+    /** Parse user desktop files (~/.local/share/applications). */
+    parse-user:   true;
+    /** Parse system desktop files (/usr/share/applications and XDG_DATA_DIRS). */
+    parse-system: true;
+  }
+}
+
 @theme "theme.rasi"
+

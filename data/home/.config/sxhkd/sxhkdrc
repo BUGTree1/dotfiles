@@ -11,7 +11,7 @@ super + r
 	rofi -show drun
 
 super + shift + r
-	rofi  -show find -modi find:~/.config/rofi/finder.sh
+	rofi -show find -modi find:~/.config/rofi/finder.sh
 
 # make sxhkd reload its configuration files:
 super + Escape
