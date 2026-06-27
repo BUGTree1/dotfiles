@@ -9,10 +9,10 @@ sxhkd &
 #bspc monitor -d I II III IV V VI VII VIII IX X
 
 #bspc monitor eDP-1-1 -d I II III IV V
-#bspc monitor HDMI-0 -d VI VI VIII IX X
+#bspc monitor HDMI-0 -d VI VII VIII IX X
 
-bspc monitor eDP-1-1 -d I II III IV V VI VI VIII IX X
-bspc monitor HDMI-0 -d I II III IV V VI VI VIII IX X
+bspc monitor eDP-1-1 -d I II III IV V VI VII VIII IX X
+bspc monitor HDMI-0 -d I II III IV V VI VII VIII IX X
 
 bspc config border_width         1
 bspc config window_gap           0
@@ -41,6 +41,8 @@ dbus-update-activation-environment --all
 # disable sleep
 xset s off -dpms
 
+sudo light -S 15
+
 # set cursor and others
 xrdb -merge ~/.Xresources
 xsetroot -cursor_name left_ptr
@@ -50,17 +52,16 @@ dunst &
 sh "/usr/bin/FanNotifications/fan-boost-notification/FanNotifications.sh" &
 #dunst & sh "/usr/bin/FanNotifications/fan-boost-notification/FanNotifications.sh &
 
-# statusbar
-#bspc config top_padding 32
-
 #gentoo-pipewire-launcher &
 
 # set wallpaper
 xwallpaper --zoom "/home/szyme/Pictures/ArchLinux_Synthwave_4K_Wallpaper.png"
 
-sudo light -S 15
-
 clipcatd
 
 #picom -b --no-vsync --no-fading-openclose
 fastcompmgr
+
+# statusbar
+bash ~/.config/bspwm/bar.sh
+bspc config top_padding 10
