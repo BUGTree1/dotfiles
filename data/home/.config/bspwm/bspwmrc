@@ -60,8 +60,8 @@ xwallpaper --zoom "/home/szyme/Pictures/ArchLinux_Synthwave_4K_Wallpaper.png"
 clipcatd
 
 #picom -b --no-vsync --no-fading-openclose
-fastcompmgr
+fastcompmgr &
 
 # statusbar
-bash ~/.config/bspwm/bar.sh
-bspc config top_padding 10
+bash ~/.config/bspwm/bar.sh &
+bspc config top_padding 16
