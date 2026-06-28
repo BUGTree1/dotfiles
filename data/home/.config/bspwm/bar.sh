@@ -1,67 +1,86 @@
 #!/usr/bin/env bash
 
-# Kill existing lemonbar instances to prevent overlapping bars on restart
-killall lemonbar 2>/dev/null
+if [ -z "$1" ]; then
+    for mon in $(bspc query -M --names); do
+        bash "$0" "$mon" &
+    done
+    wait
+    exit
+fi
 
-# --- Color Configuration ---
+MONITOR="$1"
+
+# --- Configuration ---
 # lemonbar uses #AARRGGBB format.
-BG_COLOR="#88112244"   # x% transparent "black"
-FG_COLOR="#FF7788FF"   # 100% opaque white
+BG="#88112244"
+FG="#FF7788FF"
 
 # Font configuration (Requires lemonbar to be compiled with XFT support)
 FONT="Hack Nerd Font Mono:style=Bold:size=10"
 
-# --- Workspace Parsing Function ---
+# --- Setup Named Pipe (FIFO) ---
+FIFO="/tmp/lemonbar_fifo_${MONITOR}_$$"
+mkfifo "$FIFO"
+
+trap 'rm -f "$FIFO"; kill $(jobs -p) 2>/dev/null' EXIT INT TERM
+
+# --- 1. Clock Generator ---
+(
+    while true; do
+        echo "T $(date '+%Y-%m-%d %H:%M:%S')"
+        sleep 1
+    done
+) > "$FIFO" &
+
+# --- 2. BSPWM Event Generator ---
+(
+    echo "B"
+    bspc subscribe desktop | while read -r _; do
+        echo "B"
+    done
+) > "$FIFO" &
+
+# --- State Variables ---
+CURRENT_WS=""
+CURRENT_TIME=""
+
+# --- Helper Function: Fetch & Format Workspaces ---
 get_workspaces() {
-    local monitor=$1
-    local output=""
+    local workspaces=""
     
-    # Get the focused desktop specifically for THIS monitor.
-    # The -m restricts to the monitor, and -d focused gets the active one on it.
-    local focused_ws=$(bspc query -D --names -m "$monitor" -d '.focused' 2>/dev/null)
+    # Get the ID of the globally focused desktop
+    local focused_id
+    focused_id=$(bspc query -D -d focused)
     
-    # Get all desktops for THIS monitor
-    for ws in $(bspc query -D --names -m "$monitor" 2>/dev/null); do
-        if [ "$ws" == "$focused_ws" ]; then
-            # %{R} swaps the current foreground and background colors
-            # %{A...:} makes the workspace clickable to switch to it
-            output+="%{R}%{A1:bspc desktop -f $ws:} $ws %{A}%{R}"
+    # Loop through the IDs of all desktops on THIS monitor directly
+    for ws_id in $(bspc query -D -m "$MONITOR"); do
+        # Fetch the human-readable name for this specific ID to display it
+        local ws_name
+        ws_name=$(bspc query -D -d "$ws_id" --names)
+
+        # Simply compare the loop ID to the focused ID
+        if [ "$ws_id" = "$focused_id" ]; then
+            # Focused workspace on this monitor: Swap colors
+            workspaces+="%{B${FG}}%{F${BG}} $ws_name %{F-}%{B-}"
         else
-            output+="%{A1:bspc desktop -f $ws:} $ws %{A}"
+            # Unfocused workspace on this monitor
+            workspaces+=" $ws_name "
         fi
     done
-    
-    echo "$output"
+    echo "$workspaces"
 }
 
-# --- Bar Spawning Function ---
-spawn_bar() {
-    local monitor=$1
+# --- Main Render Loop ---
+while read -r line; do
+    prefix="${line:0:1}"
+    data="${line:2}"
+
+    if [[ "$prefix" == "T" ]]; then
+        CURRENT_TIME="$data"
+    elif [[ "$prefix" == "B" ]]; then
+        CURRENT_WS=$(get_workspaces)
+    fi
+
+    echo "%{l}${CURRENT_WS}%{r}${CURRENT_TIME} "
     
-    # This loop runs in the background for each monitor
-    while true; do
-        workspaces=$(get_workspaces "$monitor")
-        clock=$(date '+%Y-%m-%d %H:%M:%S')
-        
-        # %{l} aligns the following text to the left
-        # %{r} aligns the following text to the right
-        # Added some padding spaces for aesthetics
-        echo "%{l}   ${workspaces}%{r}${clock}   "
-        
-        # Refresh every 1 second
-        sleep 1
-    done | lemonbar -g "x16++" -B "$BG_COLOR" -F "$FG_COLOR" -f "$FONT" -n "lemonbar_${monitor}" "$monitor" | sh
-}
-
-# --- Main Execution ---
-
-# Get an array of all currently connected monitor names
-MONITORS=($(bspc query -M --names))
-
-# Spawn a separate bar instance for each monitor
-for mon in "${MONITORS[@]}"; do
-    spawn_bar "$mon" &
-done
-
-# Wait for all background bar processes to keep the script alive
-wait
+done < "$FIFO" | lemonbar -p -g "x16++" -B "$BG" -F "$FG" -f "$FONT" -n "lemonbar_${monitor}" "$MONITOR"
