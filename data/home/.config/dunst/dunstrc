@@ -41,7 +41,7 @@
     # Offset from the origin
     # NOTE: Dunst from version 1.11 and older use this alternative notation
     # offset = 10x50
-    offset = (5, 5)
+    offset = (0, 16)
 
     # Scale factor. It is auto-detected if value is 0.
     scale = 0
@@ -89,7 +89,7 @@
     # The transparency of the window.  Range: [0; 100].
     # This option will only work if a compositing window manager is
     # present (e.g. xcompmgr, compiz, etc.). (X11 only)
-    transparency = 20
+    transparency = 0
 
     # Draw a line of "separator_height" pixel height between two
     # notifications.
@@ -111,7 +111,7 @@
     frame_width = 2
 
     # Defines color of the frame around the notification window.
-    frame_color = "#101055"
+    frame_color = "#101055bf"
 
     # Size of gap to display between notifications - requires a compositor.
     # If value is greater than 0, separator_height will be ignored and a border
@@ -360,24 +360,25 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#0a0b10"
-    foreground = "#ffffff"
+    background = "#0a0b10aa"
+    foreground = "#ffffffff"
+    frame_color = "#118211bf"
     timeout = 10
     # Icon for notifications with low urgency
     default_icon = dialog-information
 
 [urgency_normal]
-    background = "#0a0b10"
-    foreground = "#ffffff"
+    background = "#0a0b10aa"
+    foreground = "#ffffffff"
     timeout = 10
     override_pause_level = 30
     # Icon for notifications with normal urgency
     default_icon = dialog-information
 
 [urgency_critical]
-    background = "#0a0b10"
-    foreground = "#ffffff"
-    #frame_color = "#ff0000"
+    background = "#0a0b10aa"
+    foreground = "#ffffffff"
+    frame_color = "#aa0000bf"
     timeout = 0
     override_pause_level = 60
     # Icon for notifications with critical urgency
