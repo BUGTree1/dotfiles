@@ -11,6 +11,8 @@ SYMLINK_STORE_PREFIX="${SCRIPT_DIR}/data/"
 SYMLINK_STORE_HOME_PREFIX="${SCRIPT_DIR}/data/home/"
 
 declare -a files=(
+"opt/start-waydroid.sh"
+"opt/stop-waydroid.sh"
 )
 
 declare -a home_files=(
@@ -18,6 +20,7 @@ declare -a home_files=(
 ".config/dunst/dunstrc"
 ".config/bspwm/bspwmrc"
 ".config/bspwm/bar.sh"
+".config/weston.ini"
 ".config/zed/settings.json"
 ".config/alacritty/alacritty.toml"
 ".config/alacritty/github_dark_high_contrast.toml"
