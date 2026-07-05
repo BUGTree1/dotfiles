@@ -1,2 +1,3 @@
-xrandr --setprovideroutputsource modesetting NVIDIA-0
-xrandr --auto
+/etc/lightdm/display_setup.sh
+
+bspwm
