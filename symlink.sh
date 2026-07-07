@@ -45,6 +45,7 @@ declare -a home_folders=(
 ".config/rofi"
 ".config/yazi"
 ".nano"
+"osk"
 )
 
 symlink_path_ex () {

@@ -38,6 +38,8 @@ export XDG_SESSION_TYPE="x11"
 # This line is CRITICAL on Artix to ensure D-Bus session variables are updated
 dbus-update-activation-environment --all
 
+xset r rate 250 30
+
 # disable sleep
 xset s off -dpms
 
