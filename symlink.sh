@@ -43,6 +43,7 @@ declare -a folders=(
 
 declare -a home_folders=(
 ".config/rofi"
+".config/mpv"
 ".config/yazi"
 ".nano"
 "osk"

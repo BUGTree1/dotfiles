@@ -20,6 +20,9 @@ bspc config window_gap           0
 bspc config remove_disabled_monitors   true
 bspc config merge_overlapping_monitors true
 bspc config focus_follows_pointer      true
+bspc config pointer_follows_focus      true
+bspc config pointer_action1            move
+bspc config pointer_action3            resize_corner
 bspc config borderless_monocle         true
 bspc config gapless_monocle            true
 bspc config borderless_singleton       true
@@ -67,3 +70,6 @@ fastcompmgr &
 # statusbar
 bash ~/.config/bspwm/bar.sh &
 bspc config top_padding 16
+
+sudo modprobe -r v4l2loopback
+sudo modprobe v4l2loopback exclusive_caps=1 card_label='OBS Virtual Camera'
