@@ -19,14 +19,14 @@ bspc config window_gap           0
 
 bspc config remove_disabled_monitors   true
 bspc config merge_overlapping_monitors true
-bspc config focus_follows_pointer      true
-bspc config pointer_follows_focus      true
-bspc config pointer_action1            move
-bspc config pointer_action3            resize_corner
 bspc config borderless_monocle         true
 bspc config gapless_monocle            true
 bspc config borderless_singleton       true
 bspc config single_monocle             true
+bspc config focus_follows_pointer      true
+bspc config pointer_follows_focus      false
+bspc config pointer_action1            move
+bspc config pointer_action3            resize_corner
 bspc config split_ratio                0.5
 
 #bspc rule -a Gimp desktop='^8' state=floating follow=on
