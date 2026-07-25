@@ -35,6 +35,9 @@ bspc config split_ratio                0.5
 #bspc rule -a Kupfer.py focus=on
 #bspc rule -a Screenkey manage=off
 
+sudo modprobe -r v4l2loopback
+sudo modprobe v4l2loopback exclusive_caps=1 card_label='OBS Virtual Camera'
+
 export XDG_CURRENT_DESKTOP="LXQt"
 export XDG_SESSION_DESKTOP="LXQt"
 export XDG_SESSION_TYPE="x11"
@@ -46,30 +49,27 @@ xset r rate 250 30
 # disable sleep
 xset s off -dpms
 
-sudo light -S 15
-
 # set cursor and others
 xrdb -merge ~/.Xresources
 xsetroot -cursor_name left_ptr
+
+sudo light -S 15
+
+#picom -b --no-vsync --no-fading-openclose
+fastcompmgr &
+
+# set wallpaper
+xwallpaper --zoom "/home/szyme/Pictures/ArchLinux_Synthwave_4K_Wallpaper.png"
 
 # notifications"
 dunst &
 sh "/usr/bin/FanNotifications/fan-boost-notification/FanNotifications.sh" &
 #dunst & sh "/usr/bin/FanNotifications/fan-boost-notification/FanNotifications.sh &
 
-#gentoo-pipewire-launcher &
-
-# set wallpaper
-xwallpaper --zoom "/home/szyme/Pictures/ArchLinux_Synthwave_4K_Wallpaper.png"
-
-clipcatd
-
-#picom -b --no-vsync --no-fading-openclose
-fastcompmgr &
+clipcatd -c ~/.config/clipcat/clipcatd.toml
 
 # statusbar
 bash ~/.config/bspwm/bar.sh &
 bspc config top_padding 16
 
-sudo modprobe -r v4l2loopback
-sudo modprobe v4l2loopback exclusive_caps=1 card_label='OBS Virtual Camera'
+#gentoo-pipewire-launcher &
