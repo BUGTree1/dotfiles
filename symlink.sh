@@ -45,6 +45,7 @@ declare -a home_folders=(
 ".config/rofi"
 ".config/mpv"
 ".config/yazi"
+".config/cava"
 ".nano"
 "barva"
 "osk"
