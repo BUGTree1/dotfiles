@@ -175,16 +175,16 @@ method = ncurses
 # on noncurses output.
 # Note: many fonts have weird or missing glyphs for characters used in orientations
 # other than 'bottom', which can make output not look right.
-; orientation = bottom
+orientation = bottom
 
 # Visual channels. Can be 'stereo' or 'mono'.
 # 'stereo' mirrors both channels with low frequencies in center.
 # 'mono' outputs left to right lowest to highest frequencies.
 # 'mono_option' set mono to either take input from 'left', 'right' or 'average'.
 # set 'reverse' to 1 to display frequencies the other way around.
-; channels = stereo
-; mono_option = average
-; reverse = 0
+channels = mono
+mono_option = left
+reverse = 0
 
 # Only valid if orientation is set to 'horizontal'.
 # Set 'horizontal_stereo' to 1 to have left channel bars at top and right channel at bottom.
@@ -198,7 +198,7 @@ method = ncurses
 ; raw_target = /dev/stdout
 
 # Raw data format. Can be 'binary' or 'ascii'.
-; data_format = binary
+data_format = binary
 
 # Binary bit format, can be '8bit' (0-255) or '16bit' (0-65530).
 ; bit_format = 16bit
@@ -226,7 +226,7 @@ method = ncurses
 # enable synchronized sync. 1 = on, 0 = off
 # removes flickering in alacritty terminal emulator.
 # defaults to off since the behaviour in other terminal emulators is unknown
-; synchronized_sync = 0
+synchronized_sync = 0
 
 # Shaders for sdl_glsl, located in $HOME/.config/cava/shaders
 ; vertex_shader = pass_through.vert
@@ -287,14 +287,14 @@ waveform = 0
 # background must also be defined in hex or remain commented out. 1 = on, 0 = off.
 # You can define as many as 8 different colors. They range from bottom to top of the screen
 gradient = 1
-gradient_color_1 = '#503988'
-gradient_color_2 = '#5F4099'
-gradient_color_3 = '#6F50AA'
-gradient_color_4 = '#7F60BB'
-gradient_color_5 = '#8F70CC'
-gradient_color_6 = '#9F80DD'
-gradient_color_7 = '#AFA0EE'
-gradient_color_8 = '#BFAAFF'
+gradient_color_1 = '#3020CF'
+gradient_color_2 = '#4030CF'
+gradient_color_3 = '#6040CF'
+gradient_color_4 = '#6660CF'
+gradient_color_5 = '#7770CF'
+gradient_color_6 = '#8870DF'
+gradient_color_7 = '#9970EF'
+gradient_color_8 = '#9970FF'
 
 # Horizontal is only supported on noncurses output.
 # Only one color will be calculated per bar.
