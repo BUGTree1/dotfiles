@@ -46,6 +46,7 @@ declare -a home_folders=(
 ".config/mpv"
 ".config/yazi"
 ".nano"
+"barva"
 "osk"
 )
 
