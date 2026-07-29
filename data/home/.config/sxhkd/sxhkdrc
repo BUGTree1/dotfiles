@@ -21,7 +21,7 @@ super + Escape
 	pkill -USR1 -x sxhkd
 
 super + shift + s
-	maim -s | xclip -selection clipboard -t image/png
+	scrot -p -Z 9 -q 100 --format png -s - | xclip -selection clipboard -target image/png
 
 super + shift + c
 	clipcat-menu --rofi-menu-length 10
@@ -34,6 +34,9 @@ XF86MonBrightness{Up,Down}
  
 XF86Audio{Raise,Lower}Volume  
 	wpctl set-volume @DEFAULT_SINK@ .05{+,-} ; notify-send "$(wpctl get-volume @DEFAULT_SINK@)"
+
+Print
+    scrot -p -Z 9 -q 100 --format png -M $(xrandr --listactivemonitors | grep -w "$(bspc query -M -m focused --names)" | grep -o "^ [0-9]*") - | xclip -selection clipboard -target image/png
 
 super + b
 	TMP_BRIGHTNESS_FILE=~/".brightness.$(bspc query -M -m focused --names).tmp" ; dc -e "$(cat $TMP_BRIGHTNESS_FILE) 0.05 + p" > $TMP_BRIGHTNESS_FILE ; xrandr --output $(bspc query -M -m focused --names) --brightness $(cat $TMP_BRIGHTNESS_FILE) ; notify-send "Fake Brightness set to: $(cat $TMP_BRIGHTNESS_FILE)"
