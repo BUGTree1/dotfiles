@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
+SCRIPT_FILE=$(realpath "${0}")
+SCRIPT_DIR=$(dirname "${SCRIPT_FILE}")
+
 if [ -z "$1" ]; then
     for mon in $(bspc query -M --names); do
-        bash "$0" "$mon" &
+        "${BASH}" "${SCRIPT_FILE}" "${mon}" &
     done
     wait
     exit
@@ -16,11 +19,11 @@ BG="#88112244"
 FG="#FF7788FF"
 
 # Battery Discharge text colors
-DHG_BG="#FFFF8877"
-DHG_FG="#88442211"
+DCH_BG="#FFFF8877"
+DCH_FG="#88442211"
 
 # Font configuration (Requires lemonbar to be compiled with XFT support)
-FONT="Hack Nerd Font Mono:style=Bold:size=10"
+FONT="Hack\ Nerd\ Font\ Mono:style=Bold:size=10"
 
 # Path to the battery power_supply directory which will be shown in the bar
 BATTERY_PATH="/sys/class/power_supply/BAT1"
@@ -35,16 +38,20 @@ trap 'rm -f "$FIFO"; kill $(jobs -p) 2>/dev/null' EXIT INT TERM
 (
     while true; do
         BATTERY_STATUS="UNK"
-        BATTERY_SYS_STATUS=$(cat /sys/class/power_supply/BAT1/status)
-        if [ $(echo "${BATTERY_SYS_STATUS}" | grep -i "charging") ]; then
+        BATTERY_SYS_STATUS=$(cat "${BATTERY_PATH}/status")
+        $( echo "${BATTERY_SYS_STATUS}" | grep -q -i "charging" ) && {
             BATTERY_STATUS="CHG"
-        fi
-        if [ $(echo "${BATTERY_SYS_STATUS}" | grep -i "discharging") ]; then
-            BATTERY_STATUS="%{F${DHG_FG}}%{B${DHG_BG}}DHG%{F-}%{B-}"
-        fi
-        if [ $(echo "${BATTERY_SYS_STATUS}" | grep -i "full") ]; then
+        }
+        $( echo "${BATTERY_SYS_STATUS}" | grep -q -i "not charging" ) && {
+            BATTERY_STATUS="NCH"
+        }
+        $( echo "${BATTERY_SYS_STATUS}" | grep -q -i "discharging" ) && {
+            BATTERY_STATUS="%{F${DCH_FG}}%{B${DCH_BG}}DCH%{F-}%{B-}"
+        }
+        $( echo "${BATTERY_SYS_STATUS}" | grep -q -i "full" ) && {
             BATTERY_STATUS="FUL"
-        fi
+        }
+
         echo "T ${BATTERY_STATUS} $(cat ${BATTERY_PATH}/capacity)% $(date '+%Y-%m-%d %H:%M:%S')"
         sleep 1
     done
@@ -79,7 +86,7 @@ get_workspaces() {
         # Simply compare the loop ID to the focused ID
         if [ "$ws_id" = "$focused_id" ]; then
             # Focused workspace on this monitor: Swap colors
-            workspaces+="%{B${FG}}%{F${BG}} $ws_name %{F-}%{B-}"
+            workspaces+="%{R} $ws_name %{R}"
         else
             # Unfocused workspace on this monitor
             workspaces+=" $ws_name "
@@ -99,6 +106,27 @@ while read -r line; do
         CURRENT_WS=$(get_workspaces)
     fi
 
-    echo "%{l}${CURRENT_WS}%{r}${CURRENT_TIME} "
-    
-done < "$FIFO" | lemonbar -p -g "x16++" -B "$BG" -F "$FG" -f "$FONT" -n "lemonbar_${monitor}" "$MONITOR"
+    echo -e "%{l} %{A:poweroff:}\uf011%{A} %{A:reboot:}\uf021%{A} ${CURRENT_WS}%{r}%{A:systray:}[\uf063]%{A} ${CURRENT_TIME}"
+
+done < "$FIFO" | lemonbar -p -g "x16++" -B "$BG" -F "$FG" -f "$FONT" -n "lemonbar_${monitor}" "$MONITOR" | while read -r event; do
+    # This loop catches the output from lemonbar when a button is clicked
+    if [ "${event}" = "systray" ]; then
+        st_id=$(xdotool search --class stalonetray 2>/dev/null | head -n1)
+        st_state=$(xprop -id "${st_id}" WM_STATE 2>/dev/null)
+
+        # 0 = Normal state ; 1 = Other state
+        st_normal=$( echo "${st_state}" | grep -q -i "normal" ; echo $? )
+
+        if [ "${st_normal}" = "0" ]; then
+            xdotool windowunmap "$st_id"
+        else
+            xdotool windowmap "$st_id"
+        fi
+    fi
+    if [ "${event}" = "poweroff" ]; then
+        sudo poweroff
+    fi
+    if [ "${event}" = "reboot" ]; then
+        sudo reboot
+    fi
+done

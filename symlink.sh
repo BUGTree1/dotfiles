@@ -35,6 +35,7 @@ declare -a home_files=(
 ".xinitrc"
 ".Xresources"
 ".Xdefaults"
+".stalonetrayrc"
 )
 
 # \/ remember that the folders must not end with / or /*

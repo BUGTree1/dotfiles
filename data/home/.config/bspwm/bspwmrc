@@ -69,6 +69,8 @@ sh "/usr/bin/FanNotifications/fan-boost-notification/FanNotifications.sh" &
 clipcatd -c ~/.config/clipcat/clipcatd.toml
 
 # statusbar
+stalonetray &
+xdotool windowunmap $(xdotool search --class stalonetray)
 bash ~/.config/bspwm/bar.sh &
 bspc config top_padding 16
 
