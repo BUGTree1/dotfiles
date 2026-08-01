@@ -15,6 +15,10 @@ MONITOR="$1"
 BG="#88112244"
 FG="#FF7788FF"
 
+# Battery Discharge text colors
+DHG_BG="#FFFF8877"
+DHG_FG="#88442211"
+
 # Font configuration (Requires lemonbar to be compiled with XFT support)
 FONT="Hack Nerd Font Mono:style=Bold:size=10"
 
@@ -36,7 +40,7 @@ trap 'rm -f "$FIFO"; kill $(jobs -p) 2>/dev/null' EXIT INT TERM
             BATTERY_STATUS="CHG"
         fi
         if [ $(echo "${BATTERY_SYS_STATUS}" | grep -i "discharging") ]; then
-            BATTERY_STATUS="DHG"
+            BATTERY_STATUS="%{F${DHG_FG}}%{B${DHG_BG}}DHG%{F-}%{B-}"
         fi
         if [ $(echo "${BATTERY_SYS_STATUS}" | grep -i "full") ]; then
             BATTERY_STATUS="FUL"
