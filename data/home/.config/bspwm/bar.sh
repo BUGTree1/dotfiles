@@ -18,6 +18,9 @@ FG="#FF7788FF"
 # Font configuration (Requires lemonbar to be compiled with XFT support)
 FONT="Hack Nerd Font Mono:style=Bold:size=10"
 
+# Path to the battery power_supply directory which will be shown in the bar
+BATTERY_PATH="/sys/class/power_supply/BAT1"
+
 # --- Setup Named Pipe (FIFO) ---
 FIFO="/tmp/lemonbar_fifo_${MONITOR}_$$"
 mkfifo "$FIFO"
@@ -27,7 +30,18 @@ trap 'rm -f "$FIFO"; kill $(jobs -p) 2>/dev/null' EXIT INT TERM
 # --- 1. Clock Generator ---
 (
     while true; do
-        echo "T $(date '+%Y-%m-%d %H:%M:%S')"
+        BATTERY_STATUS="UNK"
+        BATTERY_SYS_STATUS=$(cat /sys/class/power_supply/BAT1/status)
+        if [ $(echo "${BATTERY_SYS_STATUS}" | grep -i "charging") ]; then
+            BATTERY_STATUS="CHG"
+        fi
+        if [ $(echo "${BATTERY_SYS_STATUS}" | grep -i "discharging") ]; then
+            BATTERY_STATUS="DHG"
+        fi
+        if [ $(echo "${BATTERY_SYS_STATUS}" | grep -i "full") ]; then
+            BATTERY_STATUS="FUL"
+        fi
+        echo "T ${BATTERY_STATUS} $(cat ${BATTERY_PATH}/capacity)% $(date '+%Y-%m-%d %H:%M:%S')"
         sleep 1
     done
 ) > "$FIFO" &
