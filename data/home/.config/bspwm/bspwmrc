@@ -59,7 +59,7 @@ sudo light -S 15
 fastcompmgr &
 
 # set wallpaper
-xwallpaper --zoom "/home/szyme/Pictures/ArchLinux_Synthwave_4K_Wallpaper.png"
+xwallpaper --zoom "/usr/share/backgrounds/ArchLinux_Synthwave_4K_Wallpaper.png"
 
 # notifications"
 dunst &
