@@ -108,7 +108,7 @@ while read -r line; do
 
     echo -e "%{l} %{A:poweroff:}\uf011%{A} %{A:reboot:}\uf021%{A} ${CURRENT_WS}%{r}%{A:systray:}[\uf063]%{A} ${CURRENT_TIME}"
 
-done < "$FIFO" | lemonbar -p -g "x16++" -B "$BG" -F "$FG" -f "$FONT" -n "lemonbar_${monitor}" "$MONITOR" | while read -r event; do
+done < "$FIFO" | lemonbar -p -g "x16++" -B "$BG" -F "$FG" -f "$FONT" -n "lemonbar_${MONITOR}" "${MONITOR}" | while read -r event; do
     # This loop catches the output from lemonbar when a button is clicked
     if [ "${event}" = "systray" ]; then
         st_id=$(xdotool search --class stalonetray 2>/dev/null | head -n1)

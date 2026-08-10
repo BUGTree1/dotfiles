@@ -55,23 +55,23 @@ xsetroot -cursor_name left_ptr
 
 sudo light -S 15
 
-#picom -b --no-vsync --no-fading-openclose
 fastcompmgr &
 
 # set wallpaper
 xwallpaper --zoom "/usr/share/backgrounds/ArchLinux_Synthwave_4K_Wallpaper.png"
 
-# notifications"
+# notifications
 dunst &
 sh "/usr/bin/FanNotifications/fan-boost-notification/FanNotifications.sh" &
-#dunst & sh "/usr/bin/FanNotifications/fan-boost-notification/FanNotifications.sh &
 
 clipcatd -c ~/.config/clipcat/clipcatd.toml
 
 # statusbar
-stalonetray &
-xdotool windowunmap $(xdotool search --class stalonetray)
 bash ~/.config/bspwm/bar.sh &
 bspc config top_padding 16
+xdotool search --sync --classname lemonbar windowstate --add BELOW
+stalonetray &
+xdotool windowunmap $(xdotool search --sync --classname stalonetray)
 
-#gentoo-pipewire-launcher &
+nm-applet &
+pasystray &
