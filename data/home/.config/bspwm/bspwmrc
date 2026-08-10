@@ -53,6 +53,10 @@ xset s off -dpms
 xrdb -merge ~/.Xresources
 xsetroot -cursor_name left_ptr
 
+# set gtk3/4 themes
+gsettings set org.gnome.desktop.interface gtk-theme Midnight-Night
+gsettings set org.gnome.desktop.interface icon-theme Obsidian-Indigo
+
 sudo light -S 15
 
 fastcompmgr &

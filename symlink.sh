@@ -21,6 +21,7 @@ declare -a home_files=(
 ".config/bspwm/bspwmrc"
 ".config/bspwm/bar.sh"
 ".config/gtk-3.0/settings.ini"
+".config/gtk-4.0/settings.ini"
 ".config/zed/settings.json"
 ".config/alacritty/alacritty.toml"
 ".config/alacritty/github_dark_high_contrast.toml"
@@ -37,6 +38,7 @@ declare -a home_files=(
 ".Xresources"
 ".Xdefaults"
 ".stalonetrayrc"
+".gtkrc-2.0"
 )
 
 # \/ remember that the folders must not end with / or /*
