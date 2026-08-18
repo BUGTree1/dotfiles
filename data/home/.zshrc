@@ -26,7 +26,7 @@ zstyle ':completion:*' menu select
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-ZSH_HIGHLIGHT_STYLES[path]="fg=#aaddff,bold"
-ZSH_HIGHLIGHT_STYLES[path_prefix]="fg=#aaddff,bold"
+ZSH_HIGHLIGHT_STYLES[path]="fg=#aaddff"
+ZSH_HIGHLIGHT_STYLES[path_prefix]="fg=#aaddff"
 
 reset
