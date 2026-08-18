@@ -2,8 +2,6 @@
 # ~/.profile
 #
 
-source /usr/share/bash-completion/bash_completion
-
 export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=01;04;34:ow=01;34:st=01;04;34:ex=01;32'
 
 alias sudo='doas'
@@ -22,9 +20,7 @@ alias bonsai='cbonsai -l -i -M 7 -L 38 -w 0.1 -t 0.01'
 
 #PS1='[\u@\h \W]\$ '
 PS1='\[\e[38;5;27m\]\u\[\e[38;5;39m\]@\[\e[96m\]\h\[\e[38;5;33m\]:\[\e[38;5;159m\]\w\[\e[38;5;195m\]\$\[\e[0m\] '
+PROMPT="%F{27}%n%F{39}@%F{14}%m%F{33}:%F{159}%~%F{195}%(#.#.$)%f "
 
 export PATH="$PATH:/home/szyme/.local/bin"
-
-bind 'set show-all-if-ambiguous on'
-bind 'TAB:menu-complete'
 

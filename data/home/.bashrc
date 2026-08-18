@@ -1,5 +1,3 @@
-export PATH="$HOME/.npm-global/bin:$PATH"
-export PATH="/usr/bin:$PATH"
 #
 # ~/.bashrc
 #
@@ -8,6 +6,9 @@ export PATH="/usr/bin:$PATH"
 [[ $- != *i* ]] && return
 
 source ~/.profile
+
+export PATH="$HOME/.npm-global/bin:$PATH"
+export PATH="/usr/bin:$PATH"
 
 if [[ -n "${ZED_TERM}" ]]; then
     CURRENT_DIR=$(pwd)
@@ -21,5 +22,10 @@ export HISTSIZE=100
 export HISTFILESIZE=100
 export PROMPT_COMMAND="history -a"
 shopt -s histappend
+
+source /usr/share/bash-completion/bash_completion
+
+bind 'set show-all-if-ambiguous on'
+bind 'TAB:menu-complete'
 
 clear

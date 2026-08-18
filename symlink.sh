@@ -30,6 +30,7 @@ declare -a home_files=(
 ".config/plasmashellrc"
 ".bash_profile"
 ".bashrc"
+".zshrc"
 ".languagetool.cfg"
 ".nanorc"
 ".nvidia-settings-rc"
