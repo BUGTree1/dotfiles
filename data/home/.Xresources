@@ -16,12 +16,12 @@ URxvt.scrollstyle: rxvt
 URxvt*saveLines: 16384
 URxvt.iso14755: false
 URxvt.iso14755_52: false
-URxvt.keysym.Control-Shift-C: eval:selection_to_clipboard
-URxvt.keysym.Control-Shift-V: eval:paste_clipboard
+URxvt.keysym.Control-Shift-C:     eval:selection_to_clipboard
+URxvt.keysym.Control-Shift-V:     eval:paste_clipboard
 URxvt.keysym.Control-KP_Add:      font-size:increase
 URxvt.keysym.Control-KP_Subtract: font-size:decrease
-URxvt.keysym.Control-equal:      font-size:increase
-URxvt.keysym.Control-minus: font-size:decrease
+URxvt.keysym.Control-equal:       font-size:increase
+URxvt.keysym.Control-minus:       font-size:decrease
 
 URxvt.geometry: 95x26
 

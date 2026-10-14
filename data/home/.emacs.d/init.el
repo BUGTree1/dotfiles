@@ -24,9 +24,9 @@
 ;; Automatically reread from disk if the underlying file changes by
 ;; using the OS file change notification interface rather than
 ;; repeatedly polling to see if there are changes.
-(setopt auto-revert-avoid-polling 1)
+(setopt auto-revert-avoid-polling t)
 (setopt auto-revert-interval 5)
-(setopt auto-revert-check-vc-info 1)
+(setopt auto-revert-check-vc-info t)
 (global-auto-revert-mode)
 
 ;; Save history of minibuffer
@@ -35,8 +35,8 @@
 ;; Save existing clipboard content to the kill ring---useful if you've
 ;; copied something from an external program and then kill some text
 ;; in Emacs shortly after. Also, deduplicate kill ring contents.
-(setopt save-interprogram-paste-before-kill 1)
-(setopt kill-do-not-save-duplicates 1)
+(setopt save-interprogram-paste-before-kill t)
+(setopt kill-do-not-save-duplicates t)
 
 ;; Don't ping url-looking things when running find-file
 (setopt ffap-machine-p-known 'reject)
@@ -45,7 +45,7 @@
 (windmove-default-keybindings 'control)
 
 ;; Rebalance windows automatically when splitting
-(setopt window-combination-resize 1)
+(setopt window-combination-resize t)
 
 (setopt split-window-preferred-direction 'longest)
 
@@ -53,7 +53,7 @@
 (setopt sentence-end-double-space nil)
 
 ;; Make all confirmation prompts use `y' or `n'
-(setopt use-short-answers 1)
+(setopt use-short-answers t)
 
 ;; Make right-click do something sensible and shift-drag behave better
 (when (display-graphic-p)
@@ -71,22 +71,22 @@
   :config
   (which-key-mode))
 
-(setopt enable-recursive-minibuffers 1)                ; Use the minibuffer whilst in the minibuffer
-(setopt completion-cycle-threshold 1)                  ; TAB cycles candidates
-(setopt completions-detailed 1)                        ; Show annotations
+(setopt enable-recursive-minibuffers t)                ; Use the minibuffer whilst in the minibuffer
+(setopt completion-cycle-threshold t)                  ; TAB cycles candidates
+(setopt completions-detailed t)                        ; Show annotations
 (setopt tab-always-indent 'complete)                   ; When I hit TAB, try to complete, otherwise, indent
 (setopt completion-styles '(basic initials substring)) ; Different styles to match input to candidates
 
-(setopt minibuffer-visible-completions 1)              ; Use ↑↓ to select candidates
+(setopt minibuffer-visible-completions t)              ; Use ↑↓ to select candidates
 (setopt completion-auto-help 'always)                  ; Open completion always; `lazy' another option
 (setopt completions-max-height 20)                     ; This is an arbitrary value
 (setopt completions-format 'one-column)                ; Makes it easier to scroll
-(setopt completions-group 1)
+(setopt completions-group t)
 
 ;; Eager completion setup: show *Completions* buffer immediately
 (setopt completion-auto-select 'second-tab)            ; Much more eager
-(setopt completion-eager-display 1)                    ; Show the completions buffer immediately
-(setopt completion-eager-update 1)                     ; Update display as-you-type
+(setopt completion-eager-display t)                    ; Show the completions buffer immediately
+(setopt completion-eager-update t)                     ; Update display as-you-type
 
 (keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete)
 
@@ -106,8 +106,8 @@
   )
 
 ;; Mode line information
-(setopt line-number-mode 1)                        ; Show current line in modeline
-(setopt column-number-mode 1)                      ; Show column as well
+(setopt line-number-mode t)                        ; Show current line in modeline
+(setopt column-number-mode t)                      ; Show column as well
 (setopt mode-line-collapse-minor-modes nil)        ; nil default; set to `t' to hide minor modes
 (setq-default display-line-numbers-width 3)
 (global-display-line-numbers-mode)
@@ -117,18 +117,18 @@
 (global-whitespace-mode)
 
 (setopt x-underline-at-descent-line nil)           ; Prettier underlines
-(setopt switch-to-buffer-obey-display-actions 1)   ; Make switching buffers more consistent
+(setopt switch-to-buffer-obey-display-actions t)   ; Make switching buffers more consistent
 
 (setopt show-trailing-whitespace nil)      ; By default, don't underline trailing spaces
 (setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
 
 ;; Enable horizontal scrolling
-(setopt mouse-wheel-tilt-scroll 1)
-(setopt mouse-wheel-flip-direction 1)
+(setopt mouse-wheel-tilt-scroll t)
+(setopt mouse-wheel-flip-direction t)
 
 ;; Update the cursor shape inside a terminal; e.g. when in insert mode
 ;; when using Evil (Vim emulation) change the cursor to a bar.
-(setopt xterm-update-cursor 1)
+(setopt xterm-update-cursor t)
 
 (setopt tab-width 4)
 (setopt indent-tabs-mode nil) ; Only use spaces to perform indentation
@@ -137,9 +137,6 @@
 
 (pixel-scroll-precision-mode)
 (setopt pixel-scroll-precision-interpolate-mice nil)
-
-;; Use common keystrokes by default
-(cua-mode)
 
 ;; Makes it easier to repeat commands; `C-x o C-x o' becomes `C-x o o'
 (repeat-mode)
@@ -153,28 +150,17 @@
 
 ;; Show matching delimiters
 (setopt show-paren-delay 0)
-(setopt show-paren-mode 1)
+(setopt show-paren-mode t)
 (setopt show-paren-style 'expression)   ; default is 'parenthesis and just does delimiters
 (setopt show-paren-context-when-offscreen 'overlay)
 
 ;; Show a tab bar near the buffer name
-(setopt tab-bar-show 1)
+(setopt tab-bar-show t)
 
 (add-to-list 'tab-bar-format 'tab-bar-format-align-right 'append)
 (add-to-list 'tab-bar-format 'tab-bar-format-global 'append)
 
-(use-package gruber-darker-theme)
-
-(load-theme 'gruber-darker 1)
-
-(use-package markdown-mode
-  :hook ((markdown-mode . visual-line-mode)))
-
-(use-package yaml-mode)
-(use-package json-mode)
-
-(require 'simpc-mode)
-
+;; Eglot LSP Backend
 (use-package eglot
   ;; no :ensure t here because it's built-in
 
@@ -202,11 +188,73 @@
   ;; (setopt eglot-workspace-configuration )
 )
 
+;; Company LSP Frontend
+(use-package company)
+(global-company-mode)
+
+;; Use common keybindings by default
+(cua-mode)
+
+;; TODO: Remap all keybindings better.
+
+;;(setq global-map (make-keymap))
+;;(define-key global-map [remap self-insert-command] 'self-insert-command)
+;;(global-set-key (kbd "M-x") 'execute-extended-command) ; Execute commands
+;;(global-set-key (kbd "C-q") 'save-buffers-kill-terminal) ; Quit Emacs safely
+;;(global-set-key (kbd "C-s") 'save-buffer)               ; Save files
+
+(set-frame-parameter nil 'alpha-background 85)
+(add-to-list 'default-frame-alist '(alpha-background . 85))
+
+;;(set-face-attribute 'default nil :height 100)
+(set-frame-font "FiraCode Nerd Font Mono 18" nil t)
+
+;;(use-package sorcery)
+
+;;(load-theme 'sorcery 1)
+
+(use-package ef-themes
+  :ensure t
+  :init
+  ;; This makes the Modus commands listed below consider only the Ef
+  ;; themes.  For an alternative that includes Modus and all
+  ;; derivative themes (like Ef), enable the
+  ;; `modus-themes-include-derivatives-mode' instead.  The manual of
+  ;; the Ef themes has a section that explains all the possibilities:
+  ;;
+  ;; - Evaluate `(info "(ef-themes) Working with other Modus themes or taking over Modus")'
+  ;; - Visit <https://protesilaos.com/emacs/ef-themes#h:6585235a-5219-4f78-9dd5-6a64d87d1b6e>
+  (ef-themes-take-over-modus-themes-mode 1)
+  ;;  :bind
+  ;;  (("<f5>" . modus-themes-rotate)
+  ;;   ("C-<f5>" . modus-themes-select)
+  ;;   ("M-<f5>" . modus-themes-load-random))
+  :config
+  ;; All customisations here.
+  (setq modus-themes-mixed-fonts t)
+  (setq modus-themes-italic-constructs t)
+
+  ;; Finally, load your theme of choice (or a random one with
+  ;; `modus-themes-load-random', `modus-themes-load-random-dark',
+  ;; `modus-themes-load-random-light').
+  ;;(modus-themes-load-theme 'ef-symbiosis)
+  ;;(modus-themes-load-theme 'ef-bio)
+  (modus-themes-load-theme 'ef-dark)
+)
+
 ;; c-mode
 (setq-default c-basic-offset 4
               c-default-style '((java-mode . "java")
                                 (awk-mode . "awk")
                                 (other . "bsd")))
+
+(use-package markdown-mode
+  :hook ((markdown-mode . visual-line-mode)))
+
+(use-package yaml-mode)
+(use-package json-mode)
+
+(require 'simpc-mode)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
