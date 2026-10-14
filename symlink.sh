@@ -51,6 +51,8 @@ declare -a home_folders=(
 ".config/mpv"
 ".config/yazi"
 ".config/cava"
+".urxvt/ext"
+".emacs.d"
 ".nano"
 "barva"
 "osk"

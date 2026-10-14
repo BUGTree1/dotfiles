@@ -8,7 +8,7 @@ Xft.hinting:    true
 Xft.hintstyle:  hintslight
 Xft.autohint:   false
 Xft.lcdfilter:  lcddefault
-URxvt.perl-ext-common: default,vtwheel,-matcher,-confirm-paste
+URxvt.perl-ext-common: default,vtwheel,font-size,-matcher,-confirm-paste
 URxvt.scrollBar: false
 URxvt.scrollBar_right: false
 URxvt.scrollBar_floating: false
@@ -18,6 +18,10 @@ URxvt.iso14755: false
 URxvt.iso14755_52: false
 URxvt.keysym.Control-Shift-C: eval:selection_to_clipboard
 URxvt.keysym.Control-Shift-V: eval:paste_clipboard
+URxvt.keysym.Control-KP_Add:      font-size:increase
+URxvt.keysym.Control-KP_Subtract: font-size:decrease
+URxvt.keysym.Control-equal:      font-size:increase
+URxvt.keysym.Control-minus: font-size:decrease
 
 URxvt.geometry: 95x26
 
