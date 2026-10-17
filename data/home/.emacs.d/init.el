@@ -35,14 +35,11 @@
 ;; Save existing clipboard content to the kill ring---useful if you've
 ;; copied something from an external program and then kill some text
 ;; in Emacs shortly after. Also, deduplicate kill ring contents.
-(setopt save-interprogram-paste-before-kill t)
-(setopt kill-do-not-save-duplicates t)
+;;(setopt save-interprogram-paste-before-kill t)
+;;(setopt kill-do-not-save-duplicates t)
 
 ;; Don't ping url-looking things when running find-file
 (setopt ffap-machine-p-known 'reject)
-
-;; Move through windows with Ctrl-<arrow keys>
-(windmove-default-keybindings 'control)
 
 ;; Rebalance windows automatically when splitting
 (setopt window-combination-resize t)
@@ -180,7 +177,9 @@
   (fset #'jsonrpc--log-event #'ignore)  ; massive perf boost---don't log every event
   ;; Sometimes you need to tell Eglot where to find the language server
   (add-to-list 'eglot-server-programs
-               '(simpc-mode . ("clangd")))
+               '(simpc-mode . ("clangd" "--clang-tidy=false")))
+
+  (add-to-list 'eglot-ignored-server-capabilities :inlayHintProvider)
 
   ;; You can set various options for each language server. For
   ;; example, you can raise the number of completions surfaced by a
@@ -192,19 +191,8 @@
 (use-package company)
 (global-company-mode)
 
-;; Use common keybindings by default
-(cua-mode)
-
-;; TODO: Remap all keybindings better.
-
-;;(setq global-map (make-keymap))
-;;(define-key global-map [remap self-insert-command] 'self-insert-command)
-;;(global-set-key (kbd "M-x") 'execute-extended-command) ; Execute commands
-;;(global-set-key (kbd "C-q") 'save-buffers-kill-terminal) ; Quit Emacs safely
-;;(global-set-key (kbd "C-s") 'save-buffer)               ; Save files
-
-(set-frame-parameter nil 'alpha-background 85)
-(add-to-list 'default-frame-alist '(alpha-background . 85))
+(set-frame-parameter nil 'alpha-background 95)
+(add-to-list 'default-frame-alist '(alpha-background . 95))
 
 ;;(set-face-attribute 'default nil :height 100)
 (set-frame-font "FiraCode Nerd Font Mono 18" nil t)
@@ -255,6 +243,82 @@
 (use-package json-mode)
 
 (require 'simpc-mode)
+(add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode))
+
+(electric-pair-mode 1)
+(electric-indent-mode 1)
+(setq electric-indent-inhibit t)
+(add-hook 'text-mode-hook #'turn-on-auto-fill)
+(setq-default fill-column 100)
+
+(setq winner-dont-bind-my-keys t)
+(winner-mode 1)
+
+;; Use common keybindings by default
+;;(cua-mode)
+
+;;(setq minor-mode-map-alist nil)
+(with-eval-after-load 'simpc-mode (setq simpc-mode-map (make-sparse-keymap)))
+
+(define-key local-function-key-map (kbd "<escape>") nil)
+
+(defvar my/global-map (make-keymap))
+(substitute-key-definition 'self-insert-command 'self-insert-command my/global-map (current-global-map))
+(define-key my/global-map (kbd "RET")               #'newline)
+(define-key my/global-map (kbd "TAB")               #'indent-for-tab-command)
+(define-key my/global-map (kbd "DEL")               #'delete-backward-char)
+(define-key my/global-map (kbd "<up>")              #'previous-line)
+(define-key my/global-map (kbd "<down>")            #'next-line)
+(define-key my/global-map (kbd "<left>")            #'backward-char)
+(define-key my/global-map (kbd "<right>")           #'forward-char)
+(define-key my/global-map (kbd "<home>")            #'beginning-of-line)
+(define-key my/global-map (kbd "<end>")             #'end-of-line)
+(define-key my/global-map (kbd "<deletechar>")      #'delete-char)
+(define-key my/global-map (kbd "<escape>")          #'keyboard-escape-quit)
+
+(define-key my/global-map (kbd "<down-mouse-1>")    #'mouse-drag-region)
+(define-key my/global-map (kbd "<drag-mouse-1>")    #'mouse-set-region)
+(define-key my/global-map (kbd "<mouse-1>")         #'mouse-set-point)
+(define-key my/global-map (kbd "<mouse-2>")         #'mouse-yank-primary)
+(define-key my/global-map (kbd "<mouse-3>")         #'mouse-save-then-kill)
+(define-key my/global-map (kbd "<mouse-4>")         #'mwheel-scroll)
+(define-key my/global-map (kbd "<mouse-5>")         #'mwheel-scroll)
+(define-key my/global-map (kbd "<mouse-8>")         #'undo)
+(define-key my/global-map (kbd "<mouse-9>")         #'undo-redo)
+(define-key my/global-map (kbd "<wheel-up>")        #'mwheel-scroll)
+(define-key my/global-map (kbd "<wheel-down>")      #'mwheel-scroll)
+(define-key my/global-map (kbd "<C-down-mouse-1>")  #'mouse-buffer-menu)
+(define-key my/global-map (kbd "<C-down-mouse-2>")  #'facemenu-menu)
+(define-key my/global-map (kbd "<C-down-mouse-3>")  #'mouse-major-mode-menu)
+(define-key my/global-map (kbd "<S-down-mouse-1>")  #'mouse-appearance-menu)
+(define-key my/global-map (kbd "<C-wheel-up>")      #'text-scale-increase)
+(define-key my/global-map (kbd "<C-wheel-down>")    #'text-scale-decrease)
+
+(define-key my/global-map (kbd "C-s")               #'save-buffer)
+(define-key my/global-map (kbd "C-f")               #'isearch-forward-regexp)
+(define-key my/global-map (kbd "C-z")               #'undo)
+(define-key my/global-map (kbd "C-y")               #'undo-redo)
+(define-key my/global-map (kbd "C-<left>")          #'winner-undo)
+(define-key my/global-map (kbd "C-<right>")         #'winner-redo)
+
+(define-key my/global-map (kbd "M-x")               #'execute-extended-command)
+(define-key my/global-map (kbd "C-h")               #'describe-key)
+(define-key my/global-map (kbd "M-f")               #'find-file)
+(define-key my/global-map (kbd "M-b")               #'buffer-menu)
+(define-key my/global-map (kbd "M-<up>")            #'windmove-up)
+(define-key my/global-map (kbd "M-<down>")          #'windmove-down)
+(define-key my/global-map (kbd "M-<left>")          #'windmove-left)
+(define-key my/global-map (kbd "M-<right>")         #'windmove-right)
+(define-key my/global-map (kbd "C-M-<up>")          #'split-window-vertically)
+(define-key my/global-map (kbd "C-M-<down>")        #'split-window-vertically)
+(define-key my/global-map (kbd "C-M-<left>")        #'split-window-horizontally)
+(define-key my/global-map (kbd "C-M-<right>")       #'split-window-horizontally)
+(define-key my/global-map (kbd "M-q")               #'delete-window)
+(define-key my/global-map (kbd "C-M-q")             (lambda () (interactive) (kill-buffer (current-buffer))))
+(use-global-map my/global-map)
+
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "F") 'dired-create-empty-file))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

@@ -3,6 +3,8 @@
 ;; Silence stupid startup message
 (advice-add #'display-startup-echo-area-message :override #'ignore)
 
+(setq package-quickstart t)
+
 ;; Tell use-package to install if missing by default
 ;; Use `:ensure nil' in packages you *don't* want to install
 (setq use-package-always-ensure t)
