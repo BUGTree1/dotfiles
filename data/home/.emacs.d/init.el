@@ -35,8 +35,9 @@
 ;; Save existing clipboard content to the kill ring---useful if you've
 ;; copied something from an external program and then kill some text
 ;; in Emacs shortly after. Also, deduplicate kill ring contents.
-;;(setopt save-interprogram-paste-before-kill t)
-;;(setopt kill-do-not-save-duplicates t)
+(setopt save-interprogram-paste-before-kill t)
+(setopt kill-do-not-save-duplicates t)
+(setq x-selection-timeout 10)
 
 ;; Don't ping url-looking things when running find-file
 (setopt ffap-machine-p-known 'reject)
@@ -260,21 +261,30 @@
 ;;(setq minor-mode-map-alist nil)
 (with-eval-after-load 'simpc-mode (setq simpc-mode-map (make-sparse-keymap)))
 
-(define-key local-function-key-map (kbd "<escape>") nil)
+(setq shift-select-mode t)
 
 (defvar my/global-map (make-keymap))
 (substitute-key-definition 'self-insert-command 'self-insert-command my/global-map (current-global-map))
 (define-key my/global-map (kbd "RET")               #'newline)
 (define-key my/global-map (kbd "TAB")               #'indent-for-tab-command)
 (define-key my/global-map (kbd "DEL")               #'delete-backward-char)
+(define-key my/global-map (kbd "<deletechar>")      #'delete-char)
+(define-key my/global-map (kbd "<escape>")          #'keyboard-escape-quit)
 (define-key my/global-map (kbd "<up>")              #'previous-line)
 (define-key my/global-map (kbd "<down>")            #'next-line)
 (define-key my/global-map (kbd "<left>")            #'backward-char)
 (define-key my/global-map (kbd "<right>")           #'forward-char)
 (define-key my/global-map (kbd "<home>")            #'beginning-of-line)
 (define-key my/global-map (kbd "<end>")             #'end-of-line)
-(define-key my/global-map (kbd "<deletechar>")      #'delete-char)
-(define-key my/global-map (kbd "<escape>")          #'keyboard-escape-quit)
+(define-key my/global-map (kbd "C-<up>")            (lambda () (interactive "^") (previous-line) (beginning-of-line)))
+(define-key my/global-map (kbd "C-<down>")          (lambda () (interactive "^") (next-line) (end-of-line)))
+(define-key my/global-map (kbd "C-<left>")          #'backward-word)
+(define-key my/global-map (kbd "C-<right>")         #'forward-word)
+(define-key my/global-map (kbd "C-{")               #'backward-paragraph)
+(define-key my/global-map (kbd "C-}")               #'forward-paragraph)
+(define-key my/global-map (kbd "C-S-c")             #'kill-ring-save)
+(define-key my/global-map (kbd "C-S-x")             #'kill-region)
+(define-key my/global-map (kbd "C-S-v")             #'yank)
 
 (define-key my/global-map (kbd "<down-mouse-1>")    #'mouse-drag-region)
 (define-key my/global-map (kbd "<drag-mouse-1>")    #'mouse-set-region)
@@ -294,14 +304,16 @@
 (define-key my/global-map (kbd "<C-wheel-up>")      #'text-scale-increase)
 (define-key my/global-map (kbd "<C-wheel-down>")    #'text-scale-decrease)
 
-(define-key my/global-map (kbd "C-s")               #'save-buffer)
-(define-key my/global-map (kbd "C-f")               #'isearch-forward-regexp)
+(define-key my/global-map (kbd "C-a")               #'mark-whole-buffer)
 (define-key my/global-map (kbd "C-z")               #'undo)
 (define-key my/global-map (kbd "C-y")               #'undo-redo)
-(define-key my/global-map (kbd "C-<left>")          #'winner-undo)
-(define-key my/global-map (kbd "C-<right>")         #'winner-redo)
+(define-key my/global-map (kbd "C-f")               #'isearch-forward-regexp)
+(define-key my/global-map (kbd "C-s")               #'save-buffer)
+(define-key my/global-map (kbd "C-M-z")             #'winner-undo)
+(define-key my/global-map (kbd "C-M-y")             #'winner-redo)
 
 (define-key my/global-map (kbd "M-x")               #'execute-extended-command)
+(define-key my/global-map (kbd "C-M-S-q")           #'save-buffers-kill-terminal)
 (define-key my/global-map (kbd "C-h")               #'describe-key)
 (define-key my/global-map (kbd "M-f")               #'find-file)
 (define-key my/global-map (kbd "M-b")               #'buffer-menu)
