@@ -9,7 +9,7 @@
 (with-eval-after-load 'package
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
-(package-initialize)
+;;(package-initialize)
 
 ;; turn off the welcome screen, tool bars and scroll bars
 (setopt inhibit-splash-screen 1)
@@ -88,12 +88,20 @@
 
 (keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete)
 
+(with-eval-after-load 'isearch
+  (assq-delete-all (kbd "C-s") isearch-mode-map)
+  (assq-delete-all (kbd "C-r") isearch-mode-map)
+  (assq-delete-all (kbd "DEL") isearch-mode-map)
+  (define-key isearch-mode-map (kbd "C-f")   #'isearch-repeat-forward)
+  (define-key isearch-mode-map (kbd "C-S-f") #'isearch-repeat-backward)
+  (define-key isearch-mode-map (kbd "DEL")   #'isearch-del-char))
+
 ;; isearch is Emacs's built-in searching system
 (use-package isearch
   :ensure nil                           ; already installed
-  :bind
-  (:map isearch-mode-map
-        ("C-." . isearch-forward-thing-at-point)) ; Search for thing under cursor
+  ;;:bind
+  ;;(:map isearch-mode-map
+  ;;      ("C-f" . isearch-repeat-forward)) ; Search for the next occurance
   :custom
   (lazy-count-prefix-format "(%s/%s) ")
   (isearch-lazy-count 1)                 ; show match count
@@ -237,6 +245,8 @@
                                 (awk-mode . "awk")
                                 (other . "bsd")))
 
+(use-package multiple-cursors)
+
 (use-package markdown-mode
   :hook ((markdown-mode . visual-line-mode)))
 
@@ -255,87 +265,149 @@
 (setq winner-dont-bind-my-keys t)
 (winner-mode 1)
 
+(defun my/rectangle-select-cursors (event)
+  (interactive "e")
+  (let* ((point-pos (point))
+         (mark-pos (mark))
+         (point-line (line-number-at-pos point-pos))
+         (mark-line (line-number-at-pos mark-pos))
+         (point-col (current-column))
+         (mark-col
+          (save-excursion
+            (goto-char mark-pos)
+            (current-column)))
+         (top-pos (if (<= point-line mark-line)
+                      point-pos mark-pos))
+         (bottom-pos (if (>= point-line mark-line)
+                         point-pos mark-pos))
+         (left-col (min point-col mark-col))
+         (right-col (max point-col mark-col))
+         (line-count
+          (1+ (abs (- point-line mark-line))))
+         top-left
+         bottom-right)
+
+    ;; Remove existing fake cursors and temporarily deactivate the region.
+    (mc/remove-fake-cursors)
+    (deactivate-mark)
+
+    ;; Place the primary cursor at the rectangle's top-left edge.
+    (goto-char top-pos)
+    (beginning-of-line)
+    (move-to-column left-col)
+    (setq top-left (point))
+
+    ;; Add a fake cursor at the same column on every other line.
+    (dotimes (_ (1- line-count))
+      (forward-line 1)
+      (move-to-column left-col)
+      (mc/create-fake-cursor-at-point))
+
+    ;; Calculate the rectangle's opposite corner.
+    (goto-char bottom-pos)
+    (beginning-of-line)
+    (move-to-column right-col)
+    (setq bottom-right (point))
+
+    ;; Enable multiple cursors, then restore the rectangle selection.
+    (multiple-cursors-mode 1)
+    (goto-char top-left)
+    (set-mark bottom-right)
+    (rectangle-mark-mode 1)))
+
 ;; Use common keybindings by default
 ;;(cua-mode)
 
 ;;(setq minor-mode-map-alist nil)
 ;;(with-eval-after-load 'simpc-mode (setq simpc-mode-map (make-sparse-keymap)))
 (with-eval-after-load 'simpc-mode (setcdr simpc-mode-map nil) (set-keymap-parent simpc-mode-map nil))
+(with-eval-after-load 'emacs-lisp-mode (setcdr emacs-lisp-mode-map nil) (set-keymap-parent emacs-lisp-mode-map nil))
 
-(define-key key-translation-map (kbd "C-c") (kbd "M-C-S-s-c"))
+(define-key key-translation-map (kbd "C-c") (kbd "M-C-s-c"))
 
 (setq shift-select-mode t)
 
-;; TODO: Replace, mouse drag bars, mouse block select, mouse multi cursors
-
 (defvar my/global-map (make-keymap))
 (substitute-key-definition 'self-insert-command 'self-insert-command my/global-map (current-global-map))
-(define-key my/global-map (kbd "RET")               #'newline)
-(define-key my/global-map (kbd "TAB")               #'indent-for-tab-command)
-(define-key my/global-map (kbd "DEL")               #'delete-backward-char)
-(define-key my/global-map (kbd "<deletechar>")      #'delete-char)
-(define-key my/global-map (kbd "<escape>")          #'keyboard-escape-quit)
-(define-key my/global-map (kbd "<up>")              #'previous-line)
-(define-key my/global-map (kbd "<down>")            #'next-line)
-(define-key my/global-map (kbd "<left>")            #'backward-char)
-(define-key my/global-map (kbd "<right>")           #'forward-char)
-(define-key my/global-map (kbd "<home>")            #'beginning-of-line)
-(define-key my/global-map (kbd "<end>")             #'end-of-line)
-(define-key my/global-map (kbd "C-<up>")            (lambda () (interactive "^") (previous-line) (beginning-of-line)))
-(define-key my/global-map (kbd "C-<down>")          (lambda () (interactive "^") (next-line) (end-of-line)))
-(define-key my/global-map (kbd "C-<left>")          #'backward-word)
-(define-key my/global-map (kbd "C-<right>")         #'forward-word)
-(define-key my/global-map (kbd "C-{")               #'backward-paragraph)
-(define-key my/global-map (kbd "C-}")               #'forward-paragraph)
-(define-key my/global-map (kbd "M-C-S-s-c")         #'kill-ring-save)
-(define-key my/global-map (kbd "C-x")               #'kill-region)
-(define-key my/global-map (kbd "C-v")               #'yank)
+(define-key my/global-map (kbd "RET")                            #'newline)
+(define-key my/global-map (kbd "TAB")                            #'indent-for-tab-command)
+(define-key my/global-map (kbd "DEL")                            #'delete-backward-char)
+(define-key my/global-map (kbd "<deletechar>")                   #'delete-char)
+(define-key my/global-map (kbd "<escape>")                       #'keyboard-escape-quit)
+(define-key my/global-map (kbd "<up>")                           #'previous-line)
+(define-key my/global-map (kbd "<down>")                         #'next-line)
+(define-key my/global-map (kbd "<left>")                         #'backward-char)
+(define-key my/global-map (kbd "<right>")                        #'forward-char)
+(define-key my/global-map (kbd "<home>")                         #'beginning-of-line)
+(define-key my/global-map (kbd "<end>")                          #'end-of-line)
+(define-key my/global-map (kbd "C-<up>")                         (lambda () (interactive "^") (previous-line) (beginning-of-line)))
+(define-key my/global-map (kbd "C-<down>")                       (lambda () (interactive "^") (next-line) (end-of-line)))
+(define-key my/global-map (kbd "C-<left>")                       #'backward-word)
+(define-key my/global-map (kbd "C-<right>")                      #'forward-word)
+(define-key my/global-map (kbd "C-{")                            #'backward-sexp)
+(define-key my/global-map (kbd "C-}")                            #'forward-sexp)
+(define-key my/global-map (kbd "C-<")                            #'backward-paragraph)
+(define-key my/global-map (kbd "C->")                            #'forward-paragraph)
+(define-key my/global-map (kbd "M-C-s-c")                        #'kill-ring-save)
+(define-key my/global-map (kbd "C-x")                            #'kill-region)
+(define-key my/global-map (kbd "C-v")                            #'yank)
 
-(define-key my/global-map (kbd "<down-mouse-1>")    #'mouse-drag-region)
-(define-key my/global-map (kbd "<drag-mouse-1>")    #'mouse-set-region)
-(define-key my/global-map (kbd "<mouse-1>")         #'mouse-set-point)
-(define-key my/global-map (kbd "<mouse-2>")         #'mouse-yank-primary)
-(define-key my/global-map (kbd "<mouse-3>")         #'mouse-save-then-kill)
-(define-key my/global-map (kbd "<mouse-4>")         #'mwheel-scroll)
-(define-key my/global-map (kbd "<mouse-5>")         #'mwheel-scroll)
-(define-key my/global-map (kbd "<mouse-8>")         #'undo)
-(define-key my/global-map (kbd "<mouse-9>")         #'undo-redo)
-(define-key my/global-map (kbd "<wheel-up>")        #'mwheel-scroll)
-(define-key my/global-map (kbd "<wheel-down>")      #'mwheel-scroll)
-(define-key my/global-map (kbd "<C-down-mouse-1>")  #'mouse-buffer-menu)
-(define-key my/global-map (kbd "<C-down-mouse-2>")  #'facemenu-menu)
-(define-key my/global-map (kbd "<C-down-mouse-3>")  #'mouse-major-mode-menu)
-(define-key my/global-map (kbd "<S-down-mouse-1>")  #'mouse-appearance-menu)
-(define-key my/global-map (kbd "<C-wheel-up>")      #'text-scale-increase)
-(define-key my/global-map (kbd "<C-wheel-down>")    #'text-scale-decrease)
+(define-key my/global-map (kbd "<down-mouse-1>")                 (lambda (event) (interactive "e") (mouse-drag-region event) (mc/keyboard-quit)))
+(define-key my/global-map (kbd "<drag-mouse-1>")                 #'mouse-set-region)
+(define-key my/global-map (kbd "<mouse-1>")                      #'mouse-set-point)
+(define-key my/global-map (kbd "<mouse-2>")                      #'mouse-yank-primary)
+(define-key my/global-map (kbd "<mouse-3>")                      #'mouse-save-then-kill)
+(define-key my/global-map (kbd "<mouse-4>")                      #'mwheel-scroll)
+(define-key my/global-map (kbd "<mouse-5>")                      #'mwheel-scroll)
+(define-key my/global-map (kbd "<mouse-8>")                      #'undo)
+(define-key my/global-map (kbd "<mouse-9>")                      #'undo-redo)
+(define-key my/global-map (kbd "<wheel-up>")                     #'mwheel-scroll)
+(define-key my/global-map (kbd "<wheel-down>")                   #'mwheel-scroll)
+(define-key my/global-map (kbd "C-<down-mouse-1>")               #'mouse-buffer-menu)
+(define-key my/global-map (kbd "C-<down-mouse-2>")               #'facemenu-menu)
+(define-key my/global-map (kbd "C-<down-mouse-3>")               #'mouse-major-mode-menu)
+(define-key my/global-map (kbd "S-<down-mouse-1>")               #'mouse-appearance-menu)
+(define-key my/global-map (kbd "M-<down-mouse-1>")               #'mouse-drag-region-rectangle)
+(define-key my/global-map (kbd "M-<drag-mouse-1>")               #'my/rectangle-select-cursors)
+(define-key my/global-map (kbd "M-<mouse-1>")                    #'mc/add-cursor-on-click)
+(define-key my/global-map (kbd "<C-wheel-up>")                   #'text-scale-increase)
+(define-key my/global-map (kbd "<C-wheel-down>")                 #'text-scale-decrease)
+(define-key my/global-map (kbd "<vertical-line> <down-mouse-1>") #'mouse-drag-vertical-line)
+(define-key my/global-map (kbd "<vertical-line> <drag-mouse-1>") #'mouse-drag-vertical-line)
+(define-key my/global-map (kbd "<vertical-line> <mouse-1>")      #'ignore)
+(define-key my/global-map (kbd "<mode-line> <down-mouse-1>")     #'mouse-drag-mode-line)
+(define-key my/global-map (kbd "<mode-line> <drag-mouse-1>")     #'mouse-drag-mode-line)
+(define-key my/global-map (kbd "<mode-line> <mouse-1>")          #'ignore)
 
-(define-key my/global-map (kbd "C-a")               #'mark-whole-buffer)
-(define-key my/global-map (kbd "C-z")               #'undo)
-(define-key my/global-map (kbd "C-y")               #'undo-redo)
-(define-key my/global-map (kbd "C-f")               #'isearch-forward-regexp)
-(define-key my/global-map (kbd "C-s")               #'save-buffer)
-(define-key my/global-map (kbd "C-M-z")             #'winner-undo)
-(define-key my/global-map (kbd "C-M-y")             #'winner-redo)
+(define-key my/global-map (kbd "C-a")                            #'mark-whole-buffer)
+(define-key my/global-map (kbd "C-z")                            #'undo)
+(define-key my/global-map (kbd "C-y")                            #'undo-redo)
+(define-key my/global-map (kbd "C-f")                            #'isearch-forward-regexp)
+(define-key my/global-map (kbd "C-h")                            #'query-replace-regexp)
+(define-key my/global-map (kbd "C-s")                            #'save-buffer)
+(define-key my/global-map (kbd "C-M-z")                          #'winner-undo)
+(define-key my/global-map (kbd "C-M-y")                          #'winner-redo)
+(define-key my/global-map (kbd "C-M-a")                          #'align-regexp)
 
-(define-key my/global-map (kbd "M-x")               #'execute-extended-command)
-(define-key my/global-map (kbd "C-M-S-q")           #'save-buffers-kill-terminal)
-(define-key my/global-map (kbd "C-h")               #'describe-key)
-(define-key my/global-map (kbd "M-f")               #'find-file)
-(define-key my/global-map (kbd "M-b")               #'buffer-menu)
-(define-key my/global-map (kbd "M-s")               #'shell-command)
-(define-key my/global-map (kbd "C-M-s")             #'async-shell-command)
-(define-key my/global-map (kbd "M-c")               #'recompile)
-(define-key my/global-map (kbd "C-M-c")             #'compile)
-(define-key my/global-map (kbd "M-<up>")            #'windmove-up)
-(define-key my/global-map (kbd "M-<down>")          #'windmove-down)
-(define-key my/global-map (kbd "M-<left>")          #'windmove-left)
-(define-key my/global-map (kbd "M-<right>")         #'windmove-right)
-(define-key my/global-map (kbd "C-M-<up>")          #'split-window-vertically)
-(define-key my/global-map (kbd "C-M-<down>")        #'split-window-vertically)
-(define-key my/global-map (kbd "C-M-<left>")        #'split-window-horizontally)
-(define-key my/global-map (kbd "C-M-<right>")       #'split-window-horizontally)
-(define-key my/global-map (kbd "M-q")               #'delete-window)
-(define-key my/global-map (kbd "C-M-q")             (lambda () (interactive) (kill-buffer (current-buffer))))
+(define-key my/global-map (kbd "M-x")                            #'execute-extended-command)
+(define-key my/global-map (kbd "C-M-S-q")                        #'save-buffers-kill-terminal)
+(define-key my/global-map (kbd "C-M-h")                          #'describe-key)
+(define-key my/global-map (kbd "M-f")                            #'find-file)
+(define-key my/global-map (kbd "M-b")                            #'buffer-menu)
+(define-key my/global-map (kbd "M-s")                            #'shell-command)
+(define-key my/global-map (kbd "C-M-s")                          #'async-shell-command)
+(define-key my/global-map (kbd "M-c")                            #'recompile)
+(define-key my/global-map (kbd "C-M-c")                          #'compile)
+(define-key my/global-map (kbd "M-<up>")                         #'windmove-up)
+(define-key my/global-map (kbd "M-<down>")                       #'windmove-down)
+(define-key my/global-map (kbd "M-<left>")                       #'windmove-left)
+(define-key my/global-map (kbd "M-<right>")                      #'windmove-right)
+(define-key my/global-map (kbd "C-M-<up>")                       #'split-window-vertically)
+(define-key my/global-map (kbd "C-M-<down>")                     #'split-window-vertically)
+(define-key my/global-map (kbd "C-M-<left>")                     #'split-window-horizontally)
+(define-key my/global-map (kbd "C-M-<right>")                    #'split-window-horizontally)
+(define-key my/global-map (kbd "M-q")                            #'delete-window)
+(define-key my/global-map (kbd "C-M-q")                          (lambda () (interactive) (kill-buffer (current-buffer))))
 (use-global-map my/global-map)
 
 (with-eval-after-load 'dired (define-key dired-mode-map (kbd "F") 'dired-create-empty-file))
@@ -346,8 +418,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd"
-     default))
+   '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd" default))
  '(package-selected-packages
    '(gruber-darker-theme json-mode markdown-mode simpc-mode yaml-mode)))
 (custom-set-faces
