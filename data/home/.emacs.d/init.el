@@ -3,6 +3,9 @@
 (when (< emacs-major-version 31)
   (warn "This Emacs config was only tested with Emacs 31. It can thow errors! You have version %s!" emacs-major-version))
 
+;; Env variable for eglot to work with dotnet
+(setenv "DOTNET_ROOT" "/usr/share/dotnet")
+
 (add-to-list 'load-path (concat user-emacs-directory "modes"))
 
 ;; add MELPA to the list of ELPAs that Emacs will read.
@@ -172,7 +175,7 @@
 
   ;; Configure hooks to automatically turn-on eglot for selected modes
   :hook
-  (((python-mode simpc-mode) . eglot-ensure))
+  (((python-mode simpc-mode csharp-mode) . eglot-ensure))
 
   :custom
   (eglot-send-changes-idle-time 0.1)

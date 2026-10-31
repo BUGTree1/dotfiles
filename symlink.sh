@@ -54,6 +54,7 @@ declare -a home_folders=(
 ".urxvt/ext"
 ".emacs.d"
 ".nano"
+"podman"
 "barva"
 "osk"
 )

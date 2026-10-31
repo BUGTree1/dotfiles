@@ -1,0 +1,1 @@
+sudo podman container create -i -t --network host --ipc host -e DISPLAY=$DISPLAY -e XAUTHORITY=/root/.Xauthority -v /tmp/.X11-unix:/tmp/.X11-unix:ro -v $XAUTHORITY:/root/.Xauthority:ro --device nvidia.com/gpu=all --name void void-better
