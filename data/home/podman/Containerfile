@@ -1,6 +1,6 @@
 FROM ghcr.io/void-linux/void-glibc-full:latest
 
-RUN xbps-install -Su && xbps-install -y bash libglvnd libGL libEGL mesa-demos vulkan-loader Vulkan-Tools xterm
+RUN xbps-install -Su && xbps-install -y bash libglvnd libGL libEGL mesa-demos vulkan-loader Vulkan-Tools xterm pipewire pulseaudio-utils alsa-utils
 
 ENV DISPLAY=:0
 ENV XDG_RUNTIME_DIR=/tmp
