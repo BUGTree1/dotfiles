@@ -1,6 +1,6 @@
 FROM ghcr.io/void-linux/void-glibc-full:latest
 
-RUN xbps-install -Su && xbps-install -y bash libglvnd libGL libEGL mesa-demos vulkan-loader Vulkan-Tools xterm pipewire pulseaudio-utils alsa-utils dejavu-fonts-ttf xorg-fonts
+RUN xbps-install -Su && xbps-install -y bash libglvnd libGL libEGL mesa-demos vulkan-loader Vulkan-Tools xterm pipewire pulseaudio-utils alsa-utils dejavu-fonts-ttf xorg-fonts ncurses nano
 
 ENV DISPLAY=:0
 ENV XDG_RUNTIME_DIR=/tmp
