@@ -3,6 +3,8 @@
 SCRIPT_FILE=$(realpath "${0}")
 SCRIPT_DIR=$(dirname "${SCRIPT_FILE}")
 
+SUDO_CMD=$(command -v doas || command -v sudo)
+
 if [ -z "$1" ]; then
     for mon in $(bspc query -M --names); do
         "${BASH}" "${SCRIPT_FILE}" "${mon}" &
@@ -124,9 +126,9 @@ done < "$FIFO" | lemonbar -p -g "x16++" -B "$BG" -F "$FG" -f "$FONT" -n "lemonba
         fi
     fi
     if [ "${event}" = "poweroff" ]; then
-        sudo poweroff
+        ${SUDO_CMD} poweroff
     fi
     if [ "${event}" = "reboot" ]; then
-        sudo reboot
+        ${SUDO_CMD} reboot
     fi
 done

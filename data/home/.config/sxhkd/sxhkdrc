@@ -23,8 +23,8 @@ super + Escape
 super + shift + s
 	scrot -p -Z 9 -q 100 --format png -s - | xclip -selection clipboard -target image/png
 
-super + shift + c
-	clipcat-menu --rofi-menu-length 10
+#super + shift + c
+#	clipcat-menu --rofi-menu-length 10
 
 super + alt + c
 	urxvt -e peaclock

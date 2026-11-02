@@ -2,15 +2,21 @@
 
 #exec > /var/log/bspwmrc.log
 
-export XDG_CURRENT_DESKTOP="LXQt"
-export XDG_SESSION_DESKTOP="LXQt"
+SUDO_CMD=$(command -v doas || command -v sudo)
+
+export QT_QPA_PLATFORMTHEME=gtk3
+
+export XDG_CURRENT_DESKTOP="XFCE"
+export XDG_SESSION_DESKTOP="xfce"
 export XDG_SESSION_TYPE="x11"
 export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 if [ ! -d "$XDG_RUNTIME_DIR" ]; then
-    sudo mkdir -p "$XDG_RUNTIME_DIR"
-    sudo chown $(id -u):$(id -g) "$XDG_RUNTIME_DIR"
-    chmod 700 "$XDG_RUNTIME_DIR"
+    ${SUDO_CMD} mkdir -p "$XDG_RUNTIME_DIR"
+    ${SUDO_CMD} chown $(id -u):$(id -g) "$XDG_RUNTIME_DIR"
+    ${SUDO_CMD} chmod 700 "$XDG_RUNTIME_DIR"
 fi
+
+export PATH="${PATH}:${HOME}/.local/bin"
 
 #pgrep -x sxhkd > /dev/null || sxhkd &
 
@@ -45,8 +51,8 @@ bspc config split_ratio                0.5
 #bspc rule -a Kupfer.py focus=on
 #bspc rule -a Screenkey manage=off
 
-sudo modprobe -r v4l2loopback
-sudo modprobe v4l2loopback exclusive_caps=1 card_label='OBS Virtual Camera'
+${SUDO_CMD} modprobe -r v4l2loopback
+${SUDO_CMD} modprobe v4l2loopback exclusive_caps=1 card_label='OBS Virtual Camera'
 
 # This line is CRITICAL on Artix to ensure D-Bus session variables are updated
 dbus-update-activation-environment --all
@@ -61,10 +67,10 @@ xrdb -merge ~/.Xresources
 xsetroot -cursor_name left_ptr
 
 # set gtk3/4 themes
-gsettings set org.gnome.desktop.interface gtk-theme Midnight-Night
-gsettings set org.gnome.desktop.interface icon-theme Obsidian-Indigo
+gsettings set org.gnome.desktop.interface gtk-theme "Flat-Remix-GTK-Blue-Darkest"
+gsettings set org.gnome.desktop.interface icon-theme "Flat-Remix-Blue-Dark"
 
-sudo light -S 15
+${SUDO_CMD} light -S 15
 
 fastcompmgr &
 
@@ -75,18 +81,17 @@ xwallpaper --zoom "/usr/share/backgrounds/ArchLinux_Synthwave_4K_Wallpaper.png"
 dunst &
 sh "/opt/tuf-fan-boost-notification/FanNotifications.sh" &
 
-clipcatd -c ~/.config/clipcat/clipcatd.toml
+#clipcatd -c ~/.config/clipcat/clipcatd.toml
+parcellite &
 
 # statusbar
-bash ~/.config/bspwm/bar.sh &
+~/.config/bspwm/bar.sh &
 bspc config top_padding 16
 xdotool search --sync --classname lemonbar windowstate --add BELOW
 stalonetray &
+xdotool windowstate $(xdotool search --sync --classname stalonetray) ABOVE
 xdotool windowunmap $(xdotool search --sync --classname stalonetray)
-
 nm-applet &
 pasystray &
 
 pipewire &
-wireplumber &
-pipewire-pulse &

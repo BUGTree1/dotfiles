@@ -25,6 +25,3 @@ PROMPT="%F{27}%n%F{39}@%F{14}%m%F{33}:%F{159}%~%F{195}%(#.#.$)%f "
 if [[ "$TERM" == "linux" ]]; then
     PROMPT="%F{green}%n%F{cyan}@%F{blue}%m%F{cyan}:%F{yellow}%~%F{white}%(#.#.$)%f "
 fi
-
-export PATH="$PATH:/home/szyme/.local/bin"
-
