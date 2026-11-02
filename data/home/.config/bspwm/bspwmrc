@@ -1,6 +1,16 @@
-#! /bin/sh
+#!/usr/bin/env bash
 
 #exec > /var/log/bspwmrc.log
+
+export XDG_CURRENT_DESKTOP="LXQt"
+export XDG_SESSION_DESKTOP="LXQt"
+export XDG_SESSION_TYPE="x11"
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+if [ ! -d "$XDG_RUNTIME_DIR" ]; then
+    sudo mkdir -p "$XDG_RUNTIME_DIR"
+    sudo chown $(id -u):$(id -g) "$XDG_RUNTIME_DIR"
+    chmod 700 "$XDG_RUNTIME_DIR"
+fi
 
 #pgrep -x sxhkd > /dev/null || sxhkd &
 
@@ -38,9 +48,6 @@ bspc config split_ratio                0.5
 sudo modprobe -r v4l2loopback
 sudo modprobe v4l2loopback exclusive_caps=1 card_label='OBS Virtual Camera'
 
-export XDG_CURRENT_DESKTOP="LXQt"
-export XDG_SESSION_DESKTOP="LXQt"
-export XDG_SESSION_TYPE="x11"
 # This line is CRITICAL on Artix to ensure D-Bus session variables are updated
 dbus-update-activation-environment --all
 
@@ -66,7 +73,7 @@ xwallpaper --zoom "/usr/share/backgrounds/ArchLinux_Synthwave_4K_Wallpaper.png"
 
 # notifications
 dunst &
-sh "/usr/bin/FanNotifications/fan-boost-notification/FanNotifications.sh" &
+sh "/opt/tuf-fan-boost-notification/FanNotifications.sh" &
 
 clipcatd -c ~/.config/clipcat/clipcatd.toml
 
@@ -79,3 +86,7 @@ xdotool windowunmap $(xdotool search --sync --classname stalonetray)
 
 nm-applet &
 pasystray &
+
+pipewire &
+wireplumber &
+pipewire-pulse &

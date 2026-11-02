@@ -1,3 +1,3 @@
-/etc/lightdm/display_setup.sh
+/etc/lightdm/display-setup.sh
 
-bspwm
+exec bspwm
