@@ -93,7 +93,8 @@
     "trust_all_worktrees": true,
   },
   "terminal": {
-    "font_size": 14.0,
+    "font_family": "FiraCode Nerd Font Mono",
+    "font_size": 15.0,
     "env": {
       "ZED_TERM": "1"
     },
@@ -108,10 +109,18 @@
   "remove_trailing_whitespace_on_save": false,
   "format_on_save": "off",
   "auto_indent": "none",
-  "ui_font_family": "Fira Code",
-  "buffer_font_family": "Fira Code",
-  "icon_theme": "JetBrains New UI Icons (Dark)",
-  "theme": "GitHub Dark",
+  "ui_font_family": "FiraCode Nerd Font Mono",
+  "buffer_font_family": "FiraCode Nerd Font Mono",
+  "icon_theme": {
+    "mode": "dark",
+    "light": "JetBrains New UI Icons (Dark)",
+    "dark": "JetBrains New UI Icons (Dark)"
+  },
+  "theme": {
+    "mode": "dark",
+    "light": "GitHub Dark",
+    "dark": "GitHub Dark"
+  },
   "ui_font_size": 15.0,
   "buffer_font_size": 15,
 }

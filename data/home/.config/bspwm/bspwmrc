@@ -18,6 +18,8 @@ fi
 
 export PATH="${PATH}:${HOME}/.local/bin"
 
+${SUDO_CMD} chronyd -q
+
 #pgrep -x sxhkd > /dev/null || sxhkd &
 
 sxhkd &
