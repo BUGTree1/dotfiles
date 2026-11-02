@@ -29,11 +29,17 @@ super + shift + s
 super + alt + c
 	urxvt -e peaclock
 
-XF86MonBrightness{Up,Down}  
-	sudo light -{A,U} 5 ; notify-send "Current Brightness: $(light -G)"
- 
-XF86Audio{Raise,Lower}Volume  
+XF86MonBrightness{Up,Down}
+	$(command -v doas || command -v sudo) light -{A,U} 5 ; notify-send "Current Brightness: $(light -G)"
+
+XF86Audio{Next,Prev}
+	$(command -v doas || command -v sudo) light -{A,U} 5 ; notify-send "Current Brightness: $(light -G)"
+
+XF86Audio{Raise,Lower}Volume
 	wpctl set-volume @DEFAULT_SINK@ .05{+,-} ; notify-send "$(wpctl get-volume @DEFAULT_SINK@)"
+
+XF86AudioMute
+	wpctl set-mute @DEFAULT_SINK@ toggle ; notify-send "$(wpctl get-volume @DEFAULT_SINK@)"
 
 Print
         scrot -p -Z 9 -q 100 --format png -M $(xrandr --listactivemonitors | grep -w "$(bspc query -M -m focused --names)" | grep -o "^ [0-9]*") - | xclip -selection clipboard -target image/png

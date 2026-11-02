@@ -83,9 +83,6 @@ xwallpaper --zoom "/usr/share/backgrounds/ArchLinux_Synthwave_4K_Wallpaper.png"
 dunst &
 sh "/opt/tuf-fan-boost-notification/FanNotifications.sh" &
 
-#clipcatd -c ~/.config/clipcat/clipcatd.toml
-parcellite &
-
 # statusbar
 ~/.config/bspwm/bar.sh &
 bspc config top_padding 16
@@ -95,5 +92,7 @@ xdotool windowstate $(xdotool search --sync --classname stalonetray) ABOVE
 xdotool windowunmap $(xdotool search --sync --classname stalonetray)
 nm-applet &
 pasystray &
+#clipcatd -c ~/.config/clipcat/clipcatd.toml
+copyq &
 
 pipewire &
