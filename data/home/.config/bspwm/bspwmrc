@@ -9,7 +9,7 @@ ${SUDO_CMD} modprobe v4l2loopback exclusive_caps=1 card_label='OBS Virtual Camer
 ${SUDO_CMD} modprobe vmmon
 ${SUDO_CMD} modprobe vmnet
 
-export QT_QPA_PLATFORMTHEME=gtk3
+export QT_QPA_PLATFORMTHEME="qt5ct"
 
 export XDG_CURRENT_DESKTOP="XFCE"
 export XDG_SESSION_DESKTOP="xfce"
@@ -22,8 +22,6 @@ if [ ! -d "$XDG_RUNTIME_DIR" ]; then
 fi
 
 export PATH="${PATH}:${HOME}/.local/bin"
-
-${SUDO_CMD} chronyd -q &
 
 #pgrep -x sxhkd > /dev/null || sxhkd &
 
@@ -73,6 +71,10 @@ xsetroot -cursor_name left_ptr
 # set gtk3/4 themes
 gsettings set org.gnome.desktop.interface gtk-theme "Flat-Remix-GTK-Blue-Darkest"
 gsettings set org.gnome.desktop.interface icon-theme "Flat-Remix-Blue-Dark"
+
+lxqt-policykit-agent &
+
+${SUDO_CMD} chronyd -q &
 
 ${SUDO_CMD} light -S 15
 
