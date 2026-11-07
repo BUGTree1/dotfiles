@@ -8,6 +8,7 @@ SUDO_CMD=$(command -v doas || command -v sudo)
 ${SUDO_CMD} modprobe v4l2loopback exclusive_caps=1 card_label='OBS Virtual Camera'
 ${SUDO_CMD} modprobe vmmon
 ${SUDO_CMD} modprobe vmnet
+${SUDO_CMD} modprobe vmw_vmci
 
 export QT_QPA_PLATFORMTHEME="qt5ct"
 
