@@ -100,4 +100,6 @@ pasystray &
 #clipcatd -c ~/.config/clipcat/clipcatd.toml
 copyq &
 
+doas vmware-networks --start
+
 pipewire &
