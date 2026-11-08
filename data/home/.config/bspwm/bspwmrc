@@ -10,8 +10,6 @@ ${SUDO_CMD} modprobe vmmon
 ${SUDO_CMD} modprobe vmnet
 ${SUDO_CMD} modprobe vmw_vmci
 
-export QT_QPA_PLATFORMTHEME="qt5ct"
-
 export XDG_CURRENT_DESKTOP="XFCE"
 export XDG_SESSION_DESKTOP="xfce"
 export XDG_SESSION_TYPE="x11"
@@ -23,6 +21,10 @@ if [ ! -d "$XDG_RUNTIME_DIR" ]; then
 fi
 
 export PATH="${PATH}:${HOME}/.local/bin"
+
+export QT_QPA_PLATFORMTHEME="qt5ct"
+
+export ADW_DISABLE_PORTAL=1
 
 #pgrep -x sxhkd > /dev/null || sxhkd &
 
@@ -70,6 +72,7 @@ xrdb -merge ~/.Xresources
 xsetroot -cursor_name left_ptr
 
 # set gtk3/4 themes
+gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 gsettings set org.gnome.desktop.interface gtk-theme "Flat-Remix-GTK-Blue-Darkest"
 gsettings set org.gnome.desktop.interface icon-theme "Flat-Remix-Blue-Dark"
 
@@ -100,6 +103,9 @@ pasystray &
 #clipcatd -c ~/.config/clipcat/clipcatd.toml
 copyq &
 
-doas vmware-networks --start
-
 pipewire &
+
+thunar --daemon
+
+${SUDO_CMD} vmware-networks --start
+
