@@ -1,4 +1,10 @@
 configuration {
+  modi: "combi,drun,appimage:~/.config/rofi/appimages.sh";
+  combi-modi: "drun,appimage";
+  show-mode: "combi";
+
+  combi-hide-mode-prefix: false;
+  
   drun {
     /** Scan the current users desktop for desktop files. */
     scan-desktop: true;

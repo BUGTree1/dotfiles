@@ -8,7 +8,7 @@ super + t
 
 # program launcher
 super + r
-	rofi -show drun
+	rofi -show
 
 #super + shift + r
 #	rofi -show find -modi find:~/.config/rofi/finder.sh
