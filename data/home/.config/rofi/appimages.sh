@@ -4,7 +4,7 @@ APPDIR="$HOME/AppImages"
 EXTRACT_DIR="$APPDIR/extracted"
 
 if [ "$#" -eq 0 ]; then
-    # --- PHASE 1: Extraction & Menu Generation (Called when Rofi queries the mode) ---
+    # --- PHASE 1: Extraction & Menu Generation ---
     mkdir -p "$EXTRACT_DIR"
     
     while IFS= read -r -d '' appimage; do
@@ -13,12 +13,27 @@ if [ "$#" -eq 0 ]; then
         target="$EXTRACT_DIR/$appname"
 
         if [ ! -d "$target" ] || [ "$appimage" -nt "$target" ]; then
+            # Show a notification when extraction starts
+            if command -v notify-send &> /dev/null; then
+                notify-send "AppImage Manager" "Extracting $filename...\nThis may take a moment." -i dialog-information
+            fi
+
             rm -rf "$EXTRACT_DIR/squashfs-root"
             cd "$EXTRACT_DIR" || exit
             chmod +x "$appimage"
+            
             if "$appimage" --appimage-extract > /dev/null 2>&1; then
                 rm -rf "$target"
                 mv "$EXTRACT_DIR/squashfs-root" "$target"
+                
+                # Show a success notification when done
+                if command -v notify-send &> /dev/null; then
+                    notify-send "AppImage Manager" "Successfully extracted $filename!" -i dialog-ok
+                fi
+            else
+                if command -v notify-send &> /dev/null; then
+                    notify-send "AppImage Manager" "Failed to extract $filename." -i dialog-error
+                fi
             fi
         fi
     done < <(find "$APPDIR" -maxdepth 1 -iname "*.appimage" -print0)
@@ -54,7 +69,7 @@ if [ "$#" -eq 0 ]; then
         fi
     done
 else
-    # --- PHASE 2: Execution (Called when an item is selected in Rofi) ---
+    # --- PHASE 2: Execution ---
     selected="$*"
     
     for dir in "$EXTRACT_DIR"/*/; do
