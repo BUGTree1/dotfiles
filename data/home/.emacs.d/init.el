@@ -3,8 +3,9 @@
 (when (< emacs-major-version 31)
   (warn "This Emacs config was only tested with Emacs 31. It can thow errors! You have version %s!" emacs-major-version))
 
-;; Env variable for eglot to work with dotnet
+;; Env variable for eglot lsps
 (setenv "DOTNET_ROOT" "/usr/share/dotnet")
+;;(setenv "NODE_PATH" "/usr/lib/node_modules")
 
 (add-to-list 'load-path (concat user-emacs-directory "modes"))
 
@@ -175,7 +176,7 @@
 
   ;; Configure hooks to automatically turn-on eglot for selected modes
   :hook
-  (((python-mode simpc-mode csharp-mode mhtml-mode) . eglot-ensure))
+  (((python-mode simpc-mode csharp-mode mhtml-mode html-mode js-mode css-mode) . eglot-ensure))
 
   :custom
   (eglot-send-changes-idle-time 0.1)
@@ -189,13 +190,16 @@
   (fset #'jsonrpc--log-event #'ignore)  ; massive perf boost---don't log every event
   ;; Sometimes you need to tell Eglot where to find the language server
   (add-to-list 'eglot-server-programs
-             '(simpc-mode . ("clangd" "--clang-tidy=false")))
+               '(simpc-mode . ("clangd" "--clang-tidy=false")))
 
   (add-to-list 'eglot-server-programs
-             '((js-mode js-ts-mode rjsx-mode typescript-mode tsx-ts-mode typescript-ts-mode) . ("tsc" "--lsp" "--stdio")))
+               '((js-mode js-ts-mode rjsx-mode typescript-mode tsx-ts-mode typescript-ts-mode) . ("tsc" "--lsp" "--stdio")))
 
   (add-to-list 'eglot-server-programs
-             '((html-mode mhtml-mode html-ts-mode) . ("vscode-html-language-server" "--stdio")))
+               '((html-mode mhtml-mode html-ts-mode) . ("vscode-html-language-server" "--stdio")))
+
+  (add-to-list 'eglot-server-programs
+               '((css-mode css-ts-mode scss-mode less-css-mode) . ("vscode-css-language-server" "--stdio")))
 
   (add-to-list 'eglot-ignored-server-capabilities :inlayHintProvider)
 
@@ -204,6 +208,33 @@
   ;; given langauge server to Emacs:
   ;; (setopt eglot-workspace-configuration )
 )
+
+(use-package polymode
+  :ensure t
+  :config
+  (define-hostmode poly-html-hostmode
+    :mode 'html-mode)
+
+  (define-innermode poly-html-script-innermode
+    :mode 'js-mode
+    :head-matcher "<script[^>]*>"
+    :tail-matcher "</script>"
+    :head-mode 'host
+    :tail-mode 'host)
+
+  (define-innermode poly-html-style-innermode
+    :mode 'css-mode
+    :head-matcher "<style[^>]*>"
+    :tail-matcher "</style>"
+    :head-mode 'host
+    :tail-mode 'host)
+
+  (define-polymode poly-html-mode
+    :hostmode 'poly-html-hostmode
+    :innermodes '(poly-html-script-innermode
+                  poly-html-style-innermode))
+
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . poly-html-mode)))
 
 ;; Company LSP Frontend
 (use-package company)
