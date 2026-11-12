@@ -209,33 +209,6 @@
   ;; (setopt eglot-workspace-configuration )
 )
 
-(use-package polymode
-  :ensure t
-  :config
-  (define-hostmode poly-html-hostmode
-    :mode 'html-mode)
-
-  (define-innermode poly-html-script-innermode
-    :mode 'js-mode
-    :head-matcher "<script[^>]*>"
-    :tail-matcher "</script>"
-    :head-mode 'host
-    :tail-mode 'host)
-
-  (define-innermode poly-html-style-innermode
-    :mode 'css-mode
-    :head-matcher "<style[^>]*>"
-    :tail-matcher "</style>"
-    :head-mode 'host
-    :tail-mode 'host)
-
-  (define-polymode poly-html-mode
-    :hostmode 'poly-html-hostmode
-    :innermodes '(poly-html-script-innermode
-                  poly-html-style-innermode))
-
-  (add-to-list 'auto-mode-alist '("\\.html\\'" . poly-html-mode)))
-
 ;; Company LSP Frontend
 (use-package company)
 (global-company-mode)
