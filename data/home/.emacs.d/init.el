@@ -175,7 +175,7 @@
 
   ;; Configure hooks to automatically turn-on eglot for selected modes
   :hook
-  (((python-mode simpc-mode csharp-mode) . eglot-ensure))
+  (((python-mode simpc-mode csharp-mode mhtml-mode) . eglot-ensure))
 
   :custom
   (eglot-send-changes-idle-time 0.1)
@@ -190,7 +190,7 @@
   ;; Sometimes you need to tell Eglot where to find the language server
   (add-to-list 'eglot-server-programs
                '(simpc-mode . ("clangd" "--clang-tidy=false"))
-               '((js-mode js-ts-mode rjsx-mode typescript-mode tsx-ts-mode typescript-ts-mode) . ("tsc" "--lsp" "--stdio")))
+               '((mhtml-mode js-mode js-ts-mode rjsx-mode typescript-mode tsx-ts-mode typescript-ts-mode) . ("tsc" "--lsp" "--stdio")))
 
   (add-to-list 'eglot-ignored-server-capabilities :inlayHintProvider)
 
