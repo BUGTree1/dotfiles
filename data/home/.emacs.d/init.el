@@ -190,7 +190,8 @@
   ;; Sometimes you need to tell Eglot where to find the language server
   (add-to-list 'eglot-server-programs
                '(simpc-mode . ("clangd" "--clang-tidy=false"))
-               '((mhtml-mode js-mode js-ts-mode rjsx-mode typescript-mode tsx-ts-mode typescript-ts-mode) . ("tsc" "--lsp" "--stdio")))
+               '((js-mode js-ts-mode rjsx-mode typescript-mode tsx-ts-mode typescript-ts-mode) . ("tsc" "--lsp" "--stdio"))
+               '((html-mode mhtml-mode html-ts-mode) . ("vscode-html-language-server" "--stdio")))
 
   (add-to-list 'eglot-ignored-server-capabilities :inlayHintProvider)
 
