@@ -26,6 +26,8 @@ export QT_QPA_PLATFORMTHEME="qt5ct"
 
 export ADW_DISABLE_PORTAL=1
 
+xmodmap -e "keycode 248 = XF86Launch1"
+
 #pgrep -x sxhkd > /dev/null || sxhkd &
 
 sxhkd &

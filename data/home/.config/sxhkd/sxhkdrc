@@ -29,6 +29,21 @@ super + shift + s
 super + alt + c
 	urxvt -e peaclock
 
+Print
+        scrot -p -Z 9 -q 100 --format png -M $(xrandr --listactivemonitors | grep -w "$(bspc query -M -m focused --names)" | grep -o "^ [0-9]*") - | xclip -selection clipboard -target image/png
+
+super + b
+	TMP_BRIGHTNESS_FILE=~/".brightness.$(bspc query -M -m focused --names).tmp" ; dc -e "$(cat $TMP_BRIGHTNESS_FILE) 0.05 + p" > $TMP_BRIGHTNESS_FILCE ; xrandr --output $(bspc query -M -m focused --names) --brightness $(cat $TMP_BRIGHTNESS_FILE) ; notify-send "Fake Brightness set to: $(cat $TMP_BRIGHTNESS_FILE)"
+
+super + shift + b
+	TMP_BRIGHTNESS_FILE=~/".brightness.$(bspc query -M -m focused --names).tmp" ; dc -e "$(cat $TMP_BRIGHTNESS_FILE) 0.05 - p" > $TMP_BRIGHTNESS_FILE ; xrandr --output $(bspc query -M -m focused --names) --brightness $(cat $TMP_BRIGHTNESS_FILE) ; notify-send "Fake Brightness set to: $(cat $TMP_BRIGHTNESS_FILE)"
+
+super + alt + b
+	TMP_BRIGHTNESS_FILE=~/".brightness.$(bspc query -M -m focused --names).tmp" ; dc -e "$(cat $TMP_BRIGHTNESS_FILE) 5.00 + p" > $TMP_BRIGHTNESS_FILE ; xrandr --output $(bspc query -M -m focused --names) --brightness $(cat $TMP_BRIGHTNESS_FILE) ; notify-send "Fake Brightness set to: $(cat $TMP_BRIGHTNESS_FILE)"
+
+super + shift + alt + b
+	TMP_BRIGHTNESS_FILE=~/".brightness.$(bspc query -M -m focused --names).tmp" ; dc -e "$(cat $TMP_BRIGHTNESS_FILE) 5.00 - p" > $TMP_BRIGHTNESS_FILE ; xrandr --output $(bspc query -M -m focused --names) --brightness $(cat $TMP_BRIGHTNESS_FILE) ; notify-send "Fake Brightness set to: $(cat $TMP_BRIGHTNESS_FILE)"
+
 XF86MonBrightness{Up,Down}
 	$(command -v doas || command -v sudo) light -{A,U} 5 ; notify-send "Current Brightness: $(light -G)"
 
@@ -41,20 +56,11 @@ XF86Audio{Raise,Lower}Volume
 XF86AudioMute
 	wpctl set-mute @DEFAULT_SINK@ toggle ; notify-send "$(wpctl get-volume @DEFAULT_SINK@)"
 
-Print
-        scrot -p -Z 9 -q 100 --format png -M $(xrandr --listactivemonitors | grep -w "$(bspc query -M -m focused --names)" | grep -o "^ [0-9]*") - | xclip -selection clipboard -target image/png
+XF86Launch1
+	TMP_KBD_MODE_FILE=~/.asus_kbd_mode ; TMP=$(dc -e "$(cat ~/.asus_kbd_mode) 2 + 3 % p") ; echo $TMP | tee .asus_kbd_mode ; echo "1 $(cat $TMP_KBD_MODE_FILE) 0 0 255 0" | sudo tee /sys/devices/platform/asus-nb-wmi/leds/asus::kbd_backlight/kbd_rgb_mode ; notify-send "kbd mode: $(cat $TMP_KBD_MODE_FILE)"
 
-super + b
-	TMP_BRIGHTNESS_FILE=~/".brightness.$(bspc query -M -m focused --names).tmp" ; dc -e "$(cat $TMP_BRIGHTNESS_FILE) 0.05 + p" > $TMP_BRIGHTNESS_FILE ; xrandr --output $(bspc query -M -m focused --names) --brightness $(cat $TMP_BRIGHTNESS_FILE) ; notify-send "Fake Brightness set to: $(cat $TMP_BRIGHTNESS_FILE)"
-
-super + shift + b
-	TMP_BRIGHTNESS_FILE=~/".brightness.$(bspc query -M -m focused --names).tmp" ; dc -e "$(cat $TMP_BRIGHTNESS_FILE) 0.05 - p" > $TMP_BRIGHTNESS_FILE ; xrandr --output $(bspc query -M -m focused --names) --brightness $(cat $TMP_BRIGHTNESS_FILE) ; notify-send "Fake Brightness set to: $(cat $TMP_BRIGHTNESS_FILE)"
-
-super + alt + b
-	TMP_BRIGHTNESS_FILE=~/".brightness.$(bspc query -M -m focused --names).tmp" ; dc -e "$(cat $TMP_BRIGHTNESS_FILE) 5.00 + p" > $TMP_BRIGHTNESS_FILE ; xrandr --output $(bspc query -M -m focused --names) --brightness $(cat $TMP_BRIGHTNESS_FILE) ; notify-send "Fake Brightness set to: $(cat $TMP_BRIGHTNESS_FILE)"
-
-super + shift + alt + b
-	TMP_BRIGHTNESS_FILE=~/".brightness.$(bspc query -M -m focused --names).tmp" ; dc -e "$(cat $TMP_BRIGHTNESS_FILE) 5.00 - p" > $TMP_BRIGHTNESS_FILE ; xrandr --output $(bspc query -M -m focused --names) --brightness $(cat $TMP_BRIGHTNESS_FILE) ; notify-send "Fake Brightness set to: $(cat $TMP_BRIGHTNESS_FILE)"
+XF86Launch4
+	TMP_KBD_MODE_FILE=~/.asus_kbd_mode ; TMP=$(dc -e "$(cat ~/.asus_kbd_mode) 1 + 3 % p") ; echo $TMP | tee .asus_kbd_mode ; echo "1 $(cat $TMP_KBD_MODE_FILE) 0 0 255 0" | sudo tee /sys/devices/platform/asus-nb-wmi/leds/asus::kbd_backlight/kbd_rgb_mode ; notify-send "kbd mode: $(cat $TMP_KBD_MODE_FILE)"
 
 #
 # bspwm hotkeys
